@@ -221,7 +221,8 @@ theorem Equiv.Perm.normal_subgroups {α : Type _} [DecidableEq α] [Fintype α]
   rw [← alternatingGroup.commutator_group_eq hα]
   refine commutator_le_iwasawa ?_ iwasawa_two hnN ?_
   · -- quasipreprimitive action
-    apply IsPreprimitive.isQuasipreprimitive
+    suffices IsPreprimitive (Perm α) (Nat.Combination α 2) by
+      apply IsPreprimitive.isQuasiPreprimitive
     apply Nat.Combination_isPreprimitive
     norm_num
     apply lt_of_lt_of_le _ hα; norm_num

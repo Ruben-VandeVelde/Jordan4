@@ -900,7 +900,7 @@ theorem IsMultiplyPretransitive.isPreprimitive_of_two
   by_cases hα : Subsingleton α
   -- when α is a subsingleton, two-transitivity is vacuous,
   -- but preprimitivity holds trivially
-  · apply IsPreprimitive.on_subsingleton
+  · apply IsPreprimitive.of_subsingleton
   -- The (important) case where α has at least 2 elements
   have hα' : 2 ≤ ENat.card α := by
     rw [← ENat.card_le_one_iff_subsingleton, not_le] at hα
@@ -978,7 +978,7 @@ theorem _root_.Equiv.Perm.isMultiplyPretransitive (n : ℕ) :
 /-- The action of the permutation group of α on α is preprimitive -/
 theorem _root_.Equiv.Perm.isPreprimitive : IsPreprimitive (Equiv.Perm α) α := by
   cases subsingleton_or_nontrivial α
-  · exact IsPreprimitive.on_subsingleton
+  · exact IsPreprimitive.of_subsingleton
   apply IsMultiplyPretransitive.isPreprimitive_of_two
   apply Equiv.Perm.isMultiplyPretransitive
 
@@ -1228,7 +1228,8 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
       apply And.intro hab
       exact ne_comm.mp hc.left
   -- IsTrivialBlock hB
-  apply IsPreprimitive.has_trivial_blocks ?_ hB
+  suffices IsPreprimitive (alternatingGroup α) α by
+    apply IsPreprimitive.isTrivialBlock_of_isBlock hB
   apply IsMultiplyPretransitive.isPreprimitive_of_two
   apply isMultiplyPretransitive_of_higher
   apply IsMultiplyPretransitive.alternatingGroup_of_sub_two

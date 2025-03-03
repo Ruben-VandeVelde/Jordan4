@@ -446,7 +446,8 @@ theorem is_normal_subgroup_iff_of_ne_6 {α : Type _} [DecidableEq α] [Fintype �
       exact this ⟨g, hgN⟩
     rw [h, Set.top_eq_univ]
     apply Set.mem_univ
-  · apply IsPreprimitive.isQuasipreprimitive
+  · suffices IsPreprimitive (alternatingGroup α) (Nat.Combination α 3) by
+      apply IsPreprimitive.isQuasiPreprimitive
     apply alternatingGroup.Nat.Combination.isPreprimitive_of_alt 3
     norm_num
     exact lt_of_lt_of_le (by norm_num) hα
@@ -800,7 +801,8 @@ theorem normal_subgroups_6
   rw [← alternatingGroup_is_perfect hα]
   refine commutator_le_iwasawa ?_ Iw3 hnN ?_
   · -- quasipreprimitive action
-    apply IsPreprimitive.isQuasipreprimitive
+    suffices IsPreprimitive (alternatingGroup α) (Nat.Combination α 3) by
+      apply IsPreprimitive.isQuasiPreprimitive
     apply Nat.Combination.isPreprimitive_of_alt
     norm_num
     apply lt_of_lt_of_le _ hα; norm_num
@@ -833,7 +835,8 @@ theorem normal_subgroups_8 {α : Type _} [DecidableEq α] [Fintype α]
   rw [← alternatingGroup_is_perfect hα]
   refine commutator_le_iwasawa ?_ (Iw4 hα) hnN ?_
   · -- quasipreprimitive action
-    apply IsPreprimitive.isQuasipreprimitive
+    suffices IsPreprimitive (alternatingGroup α) (Nat.Combination α 4) by
+      apply IsPreprimitive.isQuasiPreprimitive
     apply Nat.Combination.isPreprimitive_of_alt
     norm_num
     apply lt_of_lt_of_le _ hα; norm_num

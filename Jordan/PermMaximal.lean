@@ -382,7 +382,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
       exact hx
     -- IsTrivialBlock (Subtype.val ⁻¹' B : Set (sᶜ : Set α)),
     suffices IsPreprimitive (stabilizer G (sᶜ : Set α)) (sᶜ : Set α) by
-      refine IsPreprimitive.has_trivial_blocks this ?_
+      refine IsPreprimitive.isTrivialBlock_of_isBlock (G := stabilizer G (sᶜ : Set α)) ?_
       -- is_block (coe ⁻¹' B : set (sᶜ : set α))
       let φ' : stabilizer G (sᶜ : Set α) → G := Subtype.val
       let f' : (sᶜ : Set α) →ₑ[φ'] α := {
@@ -458,7 +458,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
           exact h
       -- IsTrivialBlock (coe ⁻¹' B : set s),
     suffices IsPreprimitive (stabilizer G s) s by
-      apply IsPreprimitive.has_trivial_blocks this
+      apply IsPreprimitive.isTrivialBlock_of_isBlock (G := stabilizer G s)
       -- is_block (coe ⁻¹' B : set s)
       let φ' : stabilizer G s → G := Subtype.val
       let f' : s →ₑ[φ'] α := {
@@ -625,7 +625,7 @@ theorem Nat.Combination_isPreprimitive
   let s := sn.val
   let hs : s.card = n := sn.prop
   -- have hs : (s : finset α).card = n := s.prop,
-  rw [← maximal_stabilizer_iff_preprimitive (Equiv.Perm α) sn]
+  rw [← MulAction.isCoatom_stabilizer_iff_preprimitive (Equiv.Perm α) sn, ← Subgroup.isMaximal_def]
   have : stabilizer (Equiv.Perm α) sn =
       stabilizer (Equiv.Perm α) (s : Set α) := by
     ext g

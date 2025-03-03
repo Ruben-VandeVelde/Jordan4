@@ -48,14 +48,14 @@ Ou encore : (?)
 
 -/
 variable {M α}
-
+open MulAction
 /-- The Iwasawa criterion : If a quasiprimitive action of a group G on X
   has an Iwasawa structure, then any normal subgroup that acts nontrivially
   contains the group of commutators. -/
-theorem commutator_le_iwasawa (is_qprim : IsQuasipreprimitive M α) (IwaS : IwasawaStructure M α)
-    {N : Subgroup M} (nN : N.Normal) (hNX : MulAction.fixedPoints N α ≠ ⊤) : commutator M ≤ N := by
-  have is_transN := is_qprim.pretransitive_of_normal nN hNX
-  have ntα : Nontrivial α := isnontrivial_of_nontrivial_action hNX
+theorem commutator_le_iwasawa (is_qprim : IsQuasiPreprimitive M α) (IwaS : IwasawaStructure M α)
+    {N : Subgroup M} (nN : N.Normal) (hNX : fixedPoints N α ≠ ⊤) : commutator M ≤ N := by
+  have is_transN := is_qprim.isPretransitive_of_normal hNX
+  have ntα : Nontrivial α := nontrivial_of_fixedPoints_ne_univ hNX
   obtain a : α := Nontrivial.to_nonempty.some
   refine contains_commutators_of N nN (IwaS.T a) ?_ (IwaS.is_comm a)
   -- by contains_commutators_of, it suffices to prove that N ⊔ IwaS.T x = ⊤
@@ -71,7 +71,7 @@ theorem commutator_le_iwasawa (is_qprim : IsQuasipreprimitive M α) (IwaS : Iwas
 /-- The Iwasawa criterion for simplicity -/
 theorem is_simple_iwasawa
     (is_nontrivial : Nontrivial M) (is_perfect : commutator M = ⊤)
-    (is_qprim : IsQuasipreprimitive M α) (is_faithful : FaithfulSMul M α)
+    (is_qprim : MulAction.IsQuasiPreprimitive M α) (is_faithful : FaithfulSMul M α)
     (IwaS : IwasawaStructure M α) : IsSimpleGroup M := by
   apply IsSimpleGroup.mk
   intro N nN

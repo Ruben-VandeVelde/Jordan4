@@ -478,7 +478,7 @@ end
       apply Set.Subset.antisymm hBsc hB'
     -- is_trivial_block (coe ⁻¹' B : set (sᶜ : set α)),
     suffices IsPreprimitive (stabilizer G (sᶜ : Set α)) (sᶜ : Set α) by
-      refine IsPreprimitive.has_trivial_blocks this ?_
+      refine IsPreprimitive.isTrivialBlock_of_isBlock (G := stabilizer G (sᶜ : Set α)) ?_
       -- is_block (coe ⁻¹' B : set (sᶜ : set α))
       let φ' : stabilizer G (sᶜ : Set α) → G := Subtype.val
       let f' : (sᶜ : Set α) →ₑ[φ'] α := {
@@ -529,7 +529,7 @@ end
           exact Disjoint.subset_compl_right h
     -- is_trivial_block (coe ⁻¹' B : set s),
     suffices IsPreprimitive (stabilizer G s) (s : Set α) by
-      refine IsPreprimitive.has_trivial_blocks this ?_
+      refine IsPreprimitive.isTrivialBlock_of_isBlock (G := stabilizer G s) ?_
       -- is_block (coe ⁻¹' B : set s)
       let φ' : stabilizer G s → G := Subtype.val
       let f' : s →ₑ[φ'] α := {
@@ -706,8 +706,9 @@ theorem Stabilizer.isMaximal (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
         ext
         simp only [mem_stabilizer_iff, Set.smul_set_singleton, Set.singleton_eq_singleton_iff]
       rw [this]
-      apply hasMaximalStabilizersOfPreprimitive
-      apply AlternatingGroup.isPreprimitive hα
+      rw [Subgroup.isMaximal_def]
+      have := AlternatingGroup.isPreprimitive hα
+      apply IsPreprimitive.isCoatom_stabilizer_of_isPreprimitive
     · obtain ⟨a, ha⟩ := ht
       use a; exact Set.Subsingleton.eq_singleton_of_mem ht' ha
   by_cases h0' : Set.Nontrivial s
@@ -766,7 +767,8 @@ theorem Nat.Combination.isPreprimitive_of_alt (n : ℕ) (h_one_le : 1 ≤ n)
   let s := sn.val
   let hs : s.card = n := sn.prop
   -- have hs : (s : finset α).card = n := s.prop,
-  rw [← maximal_stabilizer_iff_preprimitive (alternatingGroup α) sn]
+  rw [← MulAction.isCoatom_stabilizer_iff_preprimitive (alternatingGroup α) sn,
+    ← Subgroup.isMaximal_def]
   have : stabilizer (alternatingGroup α) sn =
     stabilizer (alternatingGroup α) (s : Set α) := by
     ext g

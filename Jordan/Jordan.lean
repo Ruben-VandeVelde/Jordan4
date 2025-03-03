@@ -47,6 +47,7 @@ a cycle of prime order contains the alternating group (Wielandt, 13.9 )
 an adequate induction lemma)
 -/
 
+open MulAction
 
 section PigeonHole
 
@@ -192,7 +193,7 @@ theorem normalClosure_of_stabilizer_eq_top (hsn' : 2 < ENat.card α)
     rw [← Nat.cast_two, ← Nat.cast_one, ENat.coe_lt_coe]
     norm_num
   have hGa : (stabilizer G a).IsMaximal :=  by
-    rw [maximal_stabilizer_iff_preprimitive G a]
+    rw [Subgroup.isMaximal_def, isCoatom_stabilizer_iff_preprimitive G a]
     exact hG'.isPreprimitive_of_two
   rw [Subgroup.isMaximal_def] at hGa
   apply hGa.right
@@ -233,7 +234,7 @@ theorem normalClosure_of_stabilizer_eq_top (hsn' : 2 < ENat.card α)
 variable [Fintype α]
 
 /-- A primitivity criterion -/
-theorem IsPreprimitive.isPreprimitive_ofFixingSubgroup_inter
+theorem MulAction.IsPreprimitive.isPreprimitive_ofFixingSubgroup_inter
     {G : Type _} [Group G] [MulAction G α] {s : Set α}
     (hs : IsPreprimitive (fixingSubgroup G s) (SubMulAction.ofFixingSubgroup G s))
     {g : G} (ha : s ∪ g • s ≠ ⊤) : -- {a : α} (ha : a ∉ s ∪ g • s) :
@@ -245,8 +246,8 @@ theorem IsPreprimitive.isPreprimitive_ofFixingSubgroup_inter
       (SubMulAction.ofFixingSubgroup G (s ∩ g • s)) :=
     isPretransitive_ofFixingSubgroup_inter hs.toIsPretransitive ha
 
-  apply isPreprimitive_of_large_image (f := SubMulAction.ofFixingSubgroup.mapOfInclusion G hts) hs
-
+  apply hs.of_card_lt (f := SubMulAction.ofFixingSubgroup.mapOfInclusion G hts)
+  rw [Nat.card_eq_fintype_card]
   rw [← Set.image_univ,
     Set.ncard_image_of_injective _ (SubMulAction.ofFixingSubgroup.mapOfInclusion_injective G _)]
 
@@ -329,7 +330,8 @@ theorem is_two_pretransitive_weak_jordan [DecidableEq α]
     rw [Set.one_lt_ncard] at this
     obtain ⟨a, ha, b, hb, hab⟩ := this
     -- apply Rudio's theorem to get g ∈ G such that a ∈ g • s, b ∉ g • s
-    obtain ⟨g, hga, hgb⟩ := Rudio hG s (Set.toFinite s) hs_nonempty hs_ne_top a b hab
+    obtain ⟨g, hga, hgb⟩ :=
+      IsPreprimitive.exists_mem_smul_and_notMem_smul (G := G) (Set.toFinite s) hs_nonempty hs_ne_top hab
 
     let t := s ∩ g • s
     have ht_trans : IsPretransitive (fixingSubgroup G t)
@@ -372,12 +374,12 @@ theorem is_two_pretransitive_weak_jordan [DecidableEq α]
     -- get a, b ∈ sᶜ, a ≠ b
     obtain ⟨a, ha : a ∈ sᶜ, b, hb : b ∈ sᶜ, hab⟩ := this
 
-    obtain ⟨g, hga, hgb⟩ := Rudio hG sᶜ (Set.toFinite sᶜ)
+    obtain ⟨g, hga, hgb⟩ := IsPreprimitive.exists_mem_smul_and_notMem_smul (G := G) (Set.toFinite sᶜ)
       (Set.nonempty_of_mem ha)
       (by intro h
           simp only [Set.top_eq_univ, Set.compl_univ_iff] at h
           simp only [h, Set.not_nonempty_empty] at hs_nonempty)
-      a b hab
+      hab
     let t := s ∩ g • s
     have : a ∉ s ∪ g • s := by
       rw [Set.mem_union]
@@ -485,7 +487,7 @@ theorem is_two_preprimitive_weak_jordan [DecidableEq α]
     rw [Set.one_lt_ncard] at this
     obtain ⟨a, ha, b, hb, hab⟩ := this
     -- apply rudio to get g ∈ G such that a ∈ g • s, b ∉ g • s
-    obtain ⟨g, hga, hgb⟩ := Rudio hG s (Set.toFinite s) hs_nonempty hs_ne_top a b hab
+    obtain ⟨g, hga, hgb⟩ := IsPreprimitive.exists_mem_smul_and_notMem_smul (G := G) (Set.toFinite s) hs_nonempty hs_ne_top hab
 
     let t := s ∩ g • s
     have ht_prim : IsPreprimitive (fixingSubgroup G t)
@@ -528,12 +530,13 @@ theorem is_two_preprimitive_weak_jordan [DecidableEq α]
     -- get a, b ∈ sᶜ, a ≠ b
     obtain ⟨a, ha : a ∈ sᶜ, b, hb : b ∈ sᶜ, hab⟩ := this
 
-    obtain ⟨g, hga, hgb⟩ := Rudio hG sᶜ (Set.toFinite sᶜ)
+    obtain ⟨g, hga, hgb⟩ := IsPreprimitive.exists_mem_smul_and_notMem_smul
+      (G := G) (Set.toFinite sᶜ)
       (Set.nonempty_of_mem ha)
       (by intro h
           simp only [Set.top_eq_univ, Set.compl_univ_iff] at h
           simp only [h, Set.not_nonempty_empty] at hs_nonempty)
-      a b hab
+      hab
     let t := s ∩ g • s
     have : a ∉ s ∪ g • s := by
       rw [Set.mem_union]
@@ -850,9 +853,9 @@ theorem jordan_swap [DecidableEq α] (hG : IsPreprimitive G α) (g : Equiv.Perm 
     apply Nat.sub_lt _ (by norm_num)
     apply lt_of_lt_of_le (by norm_num) hα3
   have : IsPretransitive _ _ := isPretransitive_of_cycle hg <| Equiv.Perm.IsSwap.isCycle h2g
-  apply isPreprimitive_of_prime
+  apply IsPreprimitive.of_prime_card
   convert Nat.prime_two
-  rw [Fintype.card_subtype]
+  rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
   rw [← Equiv.Perm.card_support_eq_two.mpr h2g]
   apply congr_arg
   ext x
@@ -900,9 +903,9 @@ theorem jordan_three_cycle [DecidableEq α]
     simp only [add_lt_add_iff_left]
     norm_num
   have : IsPretransitive _ _ := isPretransitive_of_cycle hg <| Equiv.Perm.IsThreeCycle.isCycle h3g
-  apply isPreprimitive_of_prime
+  apply IsPreprimitive.of_prime_card
   convert Nat.prime_three
-  rw [Fintype.card_subtype, ← Equiv.Perm.IsThreeCycle.card_support h3g]
+  rw [Nat.card_eq_fintype_card, Fintype.card_subtype, ← Equiv.Perm.IsThreeCycle.card_support h3g]
   apply congr_arg
   ext x
   simp [SubMulAction.mem_ofFixingSubgroup_iff]
