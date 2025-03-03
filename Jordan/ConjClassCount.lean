@@ -24,6 +24,7 @@ import Mathlib.Algebra.Group.Pointwise.Finset.Basic
 import Mathlib.GroupTheory.GroupAction.ConjAct
 import Mathlib.GroupTheory.Perm.Cycle.Basic
 import Mathlib.GroupTheory.Perm.Cycle.Factors
+import Mathlib.GroupTheory.Perm.Cycle.PossibleTypes
 import Mathlib.GroupTheory.Perm.Support
 
 /-# Centralizer of a permutation and cardinality of conjugacy classes
@@ -1612,7 +1613,7 @@ theorem hφ_mem_ker_iff (z : Equiv.Perm α) :
     change z * t = t * z
     rw [← mul_inv_eq_iff_eq_mul, ← MulAut.conj_apply, ← ConjAct.ofConjAct_toConjAct z,
       ← ConjAct.smul_eq_mulAut_conj _ t, ← hk']
-    simp only [Subgroup.coeSubtype, Subgroup.coe_mk]
+    simp only [Subgroup.coe_subtype, Subgroup.coe_mk]
     simp only [← φ_eq g k hkK t ht, hk]
     rfl
   · intro H
@@ -1630,7 +1631,7 @@ theorem hφ_mem_ker_iff (z : Equiv.Perm α) :
       rw [φ_eq']
       rw [H c hc]
       simp only [mul_inv_cancel_right, Equiv.Perm.coe_one, id, Subtype.coe_mk]
-    · simp only [Subgroup.coeSubtype, Subgroup.coe_mk]
+    · simp only [Subgroup.coe_subtype, Subgroup.coe_mk]
 /-
 /-- A general function used to describe the kernel of `OnCycleFactors.φ g` -/
 def ψAux (s : Finset (Equiv.Perm α)) (hs : s ⊆ g.cycleFactorsFinset) :
@@ -1836,7 +1837,7 @@ lemma range_ψAux2_le_fixingSubgroup_fixedPoints (g : Equiv.Perm α) :
   rw [ψAux2, Subgroup.noncommPiCoprod, MonoidHom.noncommPiCoprod_range,
     iSup_le_iff]
   rintro ⟨c, hc⟩
-  simp only [Subgroup.coeSubtype, Subgroup.subtype_range, Subgroup.zpowers_le]
+  simp only [Subgroup.coe_subtype, Subgroup.subtype_range, Subgroup.zpowers_le]
   simp only [mem_fixingSubgroup_iff]
   intro x
   simp only [Function.mem_fixedPoints, Function.IsFixedPt, Equiv.Perm.smul_def]
@@ -2400,7 +2401,7 @@ theorem hψ_range_card' (g : Equiv.Perm α) :
       have hK : Function.Injective (MulAction.stabilizer (ConjAct (Equiv.Perm α)) g).subtype := by
         apply Subgroup.subtype_injective
       rw [← Subgroup.mem_map_iff_mem hK]
-      simp only [Subgroup.coeSubtype, Subgroup.coe_mk]
+      simp only [Subgroup.coe_subtype, Subgroup.coe_mk]
       exact hz
     obtain ⟨u, ⟨_, hu'⟩⟩ := hz
     rw [← hu']
@@ -2415,9 +2416,9 @@ theorem hψ_range_card' (g : Equiv.Perm α) :
     rintro ⟨w, hw⟩
     use! ConjAct.ofConjAct ((MulAction.stabilizer (ConjAct (Equiv.Perm α)) g).subtype w)
     rw [← hφ_ker_eq_θ_range]
-    simp only [Subgroup.coeSubtype, ConjAct.toConjAct_ofConjAct, Subgroup.mem_map,
+    simp only [Subgroup.coe_subtype, ConjAct.toConjAct_ofConjAct, Subgroup.mem_map,
       SetLike.coe_eq_coe, exists_prop, exists_eq_right, hw]
-    simp only [u, Subgroup.coeSubtype, ConjAct.toConjAct_ofConjAct, Subtype.mk_eq_mk, SetLike.eta]
+    simp only [u, Subgroup.coe_subtype, ConjAct.toConjAct_ofConjAct, Subtype.mk_eq_mk, SetLike.eta]
 
 theorem Equiv.Perm.card_fixedBy (g : Equiv.Perm α) :
     Fintype.card (MulAction.fixedBy α g) =
@@ -2624,17 +2625,17 @@ theorem AlternatingGroup.of_cycleType_eq (m : Multiset ℕ) :
       obtain ⟨⟨k, hk⟩, hk', rfl⟩ := hg
       apply And.intro (Finset.mem_univ _)
       simp only [Finset.mem_filter, Finset.mem_univ, Subgroup.coe_mk, true_and] at hk'
-      simp only [Subgroup.coeSubtype, Function.Embedding.coeFn_mk, Subgroup.coe_mk]
+      simp only [Subgroup.coe_subtype, Function.Embedding.coeFn_mk, Subgroup.coe_mk]
       exact hk'
     · rintro ⟨_, hg⟩
-      simp only [Subgroup.coeSubtype, Finset.mem_map, Finset.mem_filter, Finset.mem_univ,
+      simp only [Subgroup.coe_subtype, Finset.mem_map, Finset.mem_filter, Finset.mem_univ,
         true_and, Function.Embedding.coeFn_mk, exists_prop]
       use! g
       rw [Equiv.Perm.mem_alternatingGroup, Equiv.Perm.sign_of_cycleType, hg, Even.neg_one_pow hm]
       -- exact ⟨hg, rfl⟩
   · rw [Finset.eq_empty_iff_forall_not_mem]
     intro g hg
-    simp only [Subgroup.coeSubtype, Finset.mem_map, Finset.mem_filter, Finset.mem_univ,
+    simp only [Subgroup.coe_subtype, Finset.mem_map, Finset.mem_filter, Finset.mem_univ,
       true_and, Function.Embedding.coeFn_mk, exists_prop] at hg
     obtain ⟨⟨k, hk⟩, hkm, rfl⟩ := hg
     rw [Nat.not_even_iff_odd] at hm
@@ -3084,7 +3085,7 @@ theorem kerφ_le_alternating_iff :
     -- x ∈ set.range (on_cycle_factors.ψ g)
     suffices (OnCycleFactors.φ g).ker = ⊤ by
       rw [← OnCycleFactors.hφ_ker_eq_θ_range, this]
-      simp only [Subgroup.coeSubtype, Subgroup.mem_map, Subgroup.mem_top, true_and]
+      simp only [Subgroup.coe_subtype, Subgroup.mem_map, Subgroup.mem_top, true_and]
       exact ⟨⟨x, hx⟩, rfl⟩
     -- (OnCycleFactors.φ g).ker = ⊤
     rw [eq_top_iff]

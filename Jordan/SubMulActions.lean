@@ -148,7 +148,7 @@ theorem fixingSubgroup_of_insert (a : α) (s : Set (SubMulAction.ofStabilizer M 
     rw [Subgroup.mem_map]
     suffices hm' : m ∈ stabilizer M a by
       use ⟨m, hm'⟩
-      simp only [Subgroup.coeSubtype, and_true]
+      simp only [Subgroup.coe_subtype, and_true]
       rw [mem_fixingSubgroup_iff]
       rintro ⟨y, hy⟩ hy'
       simp only [SetLike.mk_smul_mk, Subtype.mk.injEq]
@@ -160,7 +160,7 @@ theorem fixingSubgroup_of_insert (a : α) (s : Set (SubMulAction.ofStabilizer M 
     apply hm
     apply Set.mem_insert a
   · rintro ⟨⟨n, hn'⟩, hn, rfl⟩
-    simp only [Subgroup.coeSubtype, SetLike.mem_coe, mem_fixingSubgroup_iff] at hn ⊢
+    simp only [Subgroup.coe_subtype, SetLike.mem_coe, mem_fixingSubgroup_iff] at hn ⊢
     intro x hx
     rw [Set.mem_insert_iff] at hx
     cases' hx with hx hx

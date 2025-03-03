@@ -17,6 +17,7 @@ import Jordan.Mathlib.Set
 -- import Jordan.Mathlib.Cardinal
 import Jordan.Mathlib.Extensions
 
+import Mathlib.Data.Fintype.Pigeonhole
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.GroupAction.Embedding
@@ -825,7 +826,7 @@ private theorem IsMultiplyPretransitive.index_of_fixing_subgroup_aux
   rw [hfs]
   rw [Subgroup.index_map]
   rw [(MonoidHom.ker_eq_bot_iff (stabilizer M a).subtype).mpr
-      (by simp only [Subgroup.coeSubtype, Subtype.coe_injective])]
+      (by simp only [Subgroup.coe_subtype, Subtype.coe_injective])]
   simp only [sup_bot_eq, Subgroup.range_subtype]
   have hscard : s.ncard = 1 + t.ncard := by
     rw [hat']

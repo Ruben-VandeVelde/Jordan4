@@ -632,7 +632,7 @@ theorem isMaximalStab'
       suffices alternatingGroup α ≤ G'.map (alternatingGroup α).subtype by
         rw [eq_top_iff]; intro g _
         obtain ⟨g', hg', hgg'⟩ := this g.prop
-        simp only [Subgroup.coeSubtype, SetLike.coe_eq_coe] at hgg'
+        simp only [Subgroup.coe_subtype, SetLike.coe_eq_coe] at hgg'
         rw [← hgg']; exact hg'
       --   apply is_maximal_stab'_temp' s hα,
       apply le_of_isPreprimitive s hα
@@ -646,7 +646,7 @@ theorem isMaximalStab'
           simp only [Subgroup.mem_inf]
           rintro ⟨hg, hg'⟩
           refine And.intro ?_ hg'
-          simp only [Subgroup.mem_map, Subgroup.coeSubtype, exists_prop]
+          simp only [Subgroup.mem_map, Subgroup.coe_subtype, exists_prop]
           use ⟨g, hg'⟩
           constructor
           · apply le_of_lt hG'
@@ -660,7 +660,7 @@ theorem isMaximalStab'
           apply @inf_le_left (Subgroup (Equiv.Perm α)) _; apply h
           rw [Subgroup.mem_inf]
           apply And.intro _ g'.prop
-          simp only [Subgroup.mem_map, Subgroup.coeSubtype, SetLike.coe_eq_coe, exists_prop, exists_eq_right]
+          simp only [Subgroup.mem_map, Subgroup.coe_subtype, SetLike.coe_eq_coe, exists_prop, exists_eq_right]
           exact hg'
   -- hα : 4 < fintype.card α
   have h0 : 2 ≤ Set.ncard s := by

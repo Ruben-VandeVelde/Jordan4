@@ -28,15 +28,6 @@ section encard
 
 variable {α : Type*}
 
-lemma Set.one_lt_encard_iff_nontrivial (s : Set α) :
-    1 < s.encard ↔ Set.Nontrivial s := by
-  unfold Set.Nontrivial
-  rw [Set.one_lt_encard_iff]
-  constructor
-  all_goals {
-    rintro ⟨a, b, c, d, e⟩
-    exact ⟨a, c, b, d, e⟩ }
-
 -- lemma Set.nontrivial_iff_not_encard_le_one {α : Type _} (B : Set α) :
 --     Set.Nontrivial B ↔ ¬(Set.encard B ≤ 1) := by
 --   rw [not_le, Set.one_lt_encard_iff_nontrivial]
@@ -72,7 +63,7 @@ lemma Set.eq_top_iff_ncard {α : Type _} [Fintype α] (B : Set α) :
 
 lemma WithTop.add_eq_add_iff (c : ℕ∞) (m n : ℕ) :
     c + m = n + m ↔ c = n := by
-  rw [WithTop.add_right_cancel_iff]
+  rw [WithTop.add_right_inj]
   exact WithTop.coe_ne_top
 
 -- lemma Set.encard_add_eq_add_iff (s : Set α) (m n : ℕ) :

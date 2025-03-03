@@ -4,6 +4,7 @@ Authors: ACL
 
 ! This file was ported from Lean 3 source module V4
 -/
+import Mathlib.Algebra.Algebra.Defs
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.Abelianization
 import Mathlib.GroupTheory.Sylow

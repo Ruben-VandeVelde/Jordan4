@@ -12,14 +12,6 @@ variable {G : Type _} [Group G]
 
 open Subgroup
 
-theorem mem_commutatorSet_of_isConj_sq
-    {G : Type _} [Group G] {g : G} (hg : IsConj g (g ^ 2)) :
-    g ∈ commutatorSet G := by
-  obtain ⟨h, hg⟩ := hg
-  use ↑h; use g
-  rw [commutatorElement_def, hg]
-  simp only [IsUnit.mul_inv_cancel_right, Units.isUnit, mul_inv_eq_iff_eq_mul, pow_two]
-
 theorem Subgroup.map_top_eq_range {G H : Type _} [Group H] [Group G] (f : H →* G) :
     Subgroup.map f ⊤ = f.range := by
   simp only [map_eq_range_iff, codisjoint_top_left]
@@ -112,5 +104,5 @@ theorem contains_commutators_of (N : Subgroup G) (nN : N.Normal) (H : Subgroup G
   -- have lH : H ≤ φ.range.comap (quotient_group.mk' N),
   · intro h hh
     simp only [mem_comap, QuotientGroup.mk'_apply, MonoidHom.mem_range, MonoidHom.coe_comp,
-      QuotientGroup.coe_mk', coeSubtype, Function.comp_apply, Subtype.exists, exists_prop, φ]
+      QuotientGroup.coe_mk', coe_subtype, Function.comp_apply, Subtype.exists, exists_prop, φ]
     use h

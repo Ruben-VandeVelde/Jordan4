@@ -312,7 +312,7 @@ theorem Subgroup.closure_subgroupOf_eq {G : Type _} [Group G]
     Subgroup.closure (N.subtype ⁻¹' s) = (Subgroup.closure s).subgroupOf N := by
   dsimp only [Subgroup.subgroupOf]
   have hN : Function.Injective N.subtype := by
-    simp only [Subgroup.coeSubtype, Subtype.coe_injective]
+    simp only [Subgroup.coe_subtype, Subtype.coe_injective]
   apply Subgroup.map_injective hN
   rw [Subgroup.map_closure_eq]
   suffices N.subtype '' (N.subtype ⁻¹' s) = s by
@@ -320,7 +320,7 @@ theorem Subgroup.closure_subgroupOf_eq {G : Type _} [Group G]
     rw [Subgroup.map_comap_eq]
     simp only [Subgroup.range_subtype, right_eq_inf, Subgroup.closure_le]
     exact hs
-  rw [Set.image_preimage_eq_inter_range, Subgroup.coeSubtype, Subtype.range_coe_subtype]
+  rw [Set.image_preimage_eq_inter_range, Subgroup.coe_subtype, Subtype.range_coe_subtype]
   exact Set.inter_eq_self_of_subset_left hs
 
 theorem closure_three_cycles_alternating_eq_top :
@@ -335,7 +335,7 @@ theorem closure_three_cycles_alternating_eq_top :
       ← Subgroup.comap_top (alternatingGroup α).subtype,
       Subgroup.map_comap_eq, Subgroup.range_subtype, inf_top_eq]
   · ext g
-    simp only [Subgroup.coeSubtype, Set.mem_image, Set.mem_setOf_eq]
+    simp only [Subgroup.coe_subtype, Set.mem_image, Set.mem_setOf_eq]
     constructor
     rintro ⟨k, hk, rfl⟩; exact hk
     intro hg
@@ -378,7 +378,7 @@ theorem Iw_is_generator_alt :
     {g : alternatingGroup α | (g : Equiv.Perm α).IsThreeCycle} =
       (alternatingGroup α).subtype ⁻¹' {g : Equiv.Perm α | g.IsThreeCycle} := by
     ext g
-    simp only [Subgroup.coeSubtype, Set.preimage_setOf_eq]
+    simp only [Subgroup.coe_subtype, Set.preimage_setOf_eq]
   have lemma2 : {g : Equiv.Perm α | g.IsThreeCycle} ≤ alternatingGroup α := by
     intro k hk
     apply Equiv.Perm.IsThreeCycle.mem_alternatingGroup
@@ -525,7 +525,7 @@ theorem Iw4T_is_conj (g : alternatingGroup α) (s : Finset α) (_ : s.card = 4) 
       rw [Subgroup.map_top_of_surjective]
       exact MulEquiv.surjective _
     · ext ⟨k, hk⟩ x
-      simp only [Submonoid.coe_subtype, MonoidHom.coe_comp, Subgroup.coeSubtype,
+      simp only [Submonoid.coe_subtype, MonoidHom.coe_comp, Subgroup.coe_subtype,
         Function.comp_apply, MulEquiv.coe_toMonoidHom, coe_mul]
       have := Equiv.Perm.IwConj'_eq_apply (rfl : _ = ↑g • s) k
       rw [DFunLike.ext_iff] at this
@@ -686,7 +686,7 @@ theorem closure_perm22_alternating_eq_top (hα : 5 ≤ Fintype.card α) :
       rw [closure_perm22_eq_top hα]
       rw [← Subgroup.comap_top (alternatingGroup α).subtype, Subgroup.map_comap_eq, Subgroup.range_subtype, inf_top_eq]
     · ext g
-      simp only [Subgroup.coeSubtype, Set.mem_image, Set.mem_setOf_eq]
+      simp only [Subgroup.coe_subtype, Set.mem_image, Set.mem_setOf_eq]
       constructor
       rintro ⟨k, hk, rfl⟩; exact hk
       intro hg
@@ -694,7 +694,7 @@ theorem closure_perm22_alternating_eq_top (hα : 5 ≤ Fintype.card α) :
       rw [Equiv.Perm.mem_alternatingGroup, Equiv.Perm.sign_of_cycleType, hg]
       norm_num
       decide
-  simp only [Subgroup.coeSubtype, Subtype.coe_injective]
+  simp only [Subgroup.coe_subtype, Subtype.coe_injective]
 
 theorem is_perm22_exists_of_subtype (g : alternatingGroup α)
     (hg : (g : Equiv.Perm α).cycleType = {2, 2}) :
@@ -724,7 +724,7 @@ theorem is_perm22_exists_of_subtype (g : alternatingGroup α)
           rw [V4_carrier_eq _ hs4]
           apply Or.intro_right
           rw [that, hg]
-          simp only [MonoidHom.coe_comp, Subgroup.coeSubtype, Function.comp_apply, Subgroup.coe_mk]
+          simp only [MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply, Subgroup.coe_mk]
           exact this
       · suffices that : cycleType k = cycleType (ofSubtype k : Equiv.Perm α) by
           rw [that, this]
@@ -743,7 +743,7 @@ theorem Iw4_is_generator_alt (hα : 5 ≤ Fintype.card α) :
   have lemma1 :
     {g : alternatingGroup α | (g : Equiv.Perm α).cycleType = {2, 2}} =
       (alternatingGroup α).subtype ⁻¹' {g : Equiv.Perm α | g.cycleType = {2, 2}} := by
-    ext g; simp only [Subgroup.coeSubtype, Set.preimage_setOf_eq]
+    ext g; simp only [Subgroup.coe_subtype, Set.preimage_setOf_eq]
   have lemma2 : {g : Equiv.Perm α | g.cycleType = {2, 2}} ≤ alternatingGroup α := by
     intro k hk
     simp only [Set.mem_setOf_eq] at hk
@@ -763,7 +763,7 @@ theorem Iw4_is_generator_alt (hα : 5 ≤ Fintype.card α) :
     rintro ⟨k, hk, rfl⟩
     simp only [SetLike.mem_coe] at hk
     rw [Equiv.Perm.mem_alternatingGroup]
-    simp only [MonoidHom.coe_comp, Subgroup.coeSubtype, sign_ofSubtype]
+    simp only [MonoidHom.coe_comp, Subgroup.coe_subtype, sign_ofSubtype]
     simp only [Function.comp_apply, sign_ofSubtype]
     convert mem_alternatingGroup.mp (Subtype.prop k)
   · -- closure ≤ supr
