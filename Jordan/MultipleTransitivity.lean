@@ -919,18 +919,16 @@ theorem IsMultiplyPretransitive.isPreprimitive_of_two
     exact h
   · right
     obtain ⟨a, ha, b, hb, h⟩ := h
-    rw [eq_top_iff]
+    rw [← Set.univ_subset_iff]
     intro c _
     by_cases h' : a = c
     · rw [← h']; exact ha
-    · rw [IsBlock.mk_subset] at hB
+    · rw [isBlock_iff_smul_eq_of_mem] at hB
       rw [is_two_pretransitive_iff] at h2
       obtain ⟨g, hga, hgb⟩ := h2 a b a c h h'
-      apply hB ha
-      · rw [← hga]
-        exact Set.smul_mem_smul_set ha
-      · rw [← hgb]
-        exact Set.smul_mem_smul_set hb
+      have := hB ha (by rwa [hga])
+      rw [← this, ← hgb]
+      exact Set.smul_mem_smul_set hb
 
 section Finite
 
@@ -1190,8 +1188,7 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
       obtain ⟨c, hc⟩ := this
       simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hc
       suffices ({a, b, c} : Finset α) = Finset.univ by
-        rw [eq_top_iff]
-        rw [Set.top_eq_univ, ← Finset.coe_univ, ← this]
+        rw [← Set.univ_subset_iff, ← Finset.coe_univ, ← this]
         intro x hx
         simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
           Set.mem_singleton_iff] at hx
@@ -1217,7 +1214,7 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
           rw [Equiv.swap_apply_right]
           rw [Equiv.swap_apply_of_ne_of_ne hc.left hc.right]
         -- g • B = B
-        apply hB.def_mem ha
+        apply hB.smul_eq_of_mem ha
         change (Equiv.swap a b * Equiv.swap c b) • a ∈ B
         simp only [Equiv.Perm.smul_def, Equiv.Perm.coe_mul, Function.comp_apply]
         rw [Equiv.swap_apply_of_ne_of_ne (ne_comm.mp hc.left) hab]

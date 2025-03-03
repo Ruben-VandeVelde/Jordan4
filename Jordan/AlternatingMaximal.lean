@@ -456,7 +456,7 @@ end
     rw [← smul_set_ncard_eq k B]
     apply Set.ncard_le_ncard (ht := Set.toFinite s)
     rw [← Set.disjoint_compl_right_iff_subset, ← hBsc]
-    apply or_iff_not_imp_left.mp (IsBlock.def_one.mp hB k)
+    apply or_iff_not_imp_left.mp (hB.smul_eq_or_disjoint k)
     intro h
     apply Set.notMem_empty a
     rw [← Set.inter_compl_self s]
@@ -484,7 +484,7 @@ end
       let f' : (sᶜ : Set α) →ₑ[φ'] α := {
         toFun := Subtype.val
         map_smul' := fun m x => by simp only [φ', SMul.smul_stabilizer_def] }
-      apply MulAction.IsBlock_preimage f' hB
+      apply hB.preimage f'
     apply stabilizer.isPreprimitive'
     · rw [compl_compl]; exact h0
     · rw [stabilizer_compl]
@@ -504,7 +504,7 @@ end
           apply Set.Subset.antisymm hBs
           intro x hx
           suffices x = Subtype.val (⟨x, hx⟩ : s) by
-            rw [this, ← Set.mem_preimage, hB', Set.top_eq_univ]
+            rw [this, ← Set.mem_preimage, hB']
             apply Set.mem_univ
           rfl
         have : ∃ g' ∈ G, g' • s ≠ s := by
@@ -516,7 +516,7 @@ end
           rw [Subgroup.mem_inf] at hg' ⊢
           exact ⟨h g' hg'.left, hg'.right⟩
         obtain ⟨g', hg', hg's⟩ := this
-        cases' IsBlock.def_one.mp hB ⟨g', hg'⟩ with h h
+        cases' hB.smul_eq_or_disjoint ⟨g', hg'⟩ with h h
         · -- case g' • B = B : absurd, since B = s and choice of g'
           exfalso
           apply hg's; rw [← hBs']; exact h
@@ -524,7 +524,7 @@ end
           suffices (g' • B).Subsingleton by
             apply Set.subsingleton_of_image _ B this
             apply Function.Bijective.injective (MulAction.bijective _)
-          apply hB_not_le_sc ((⟨g', hg'⟩ : G) • B) (IsBlock_of_block _ hB)
+          apply hB_not_le_sc ((⟨g', hg'⟩ : G) • B) (hB.translate _)
           rw [← hBs']
           exact Disjoint.subset_compl_right h
     -- is_trivial_block (coe ⁻¹' B : set s),
@@ -535,7 +535,7 @@ end
       let f' : s →ₑ[φ'] α := {
         toFun := Subtype.val
         map_smul' := fun ⟨m, _⟩ x => by simp [φ'] }
-      apply MulAction.IsBlock_preimage f' hB
+      apply hB.preimage f'
     apply stabilizer.isPreprimitive' s h1
     convert le_trans (le_of_lt hG) inf_le_left
   intro B hB
@@ -556,7 +556,7 @@ end
         rw [← hkbx, ← this, Set.smul_mem_smul_set_iff]
         exact hb
       -- k • B = B,
-      apply or_iff_not_imp_right.mp (IsBlock.def_one.mp hB ⟨k, _⟩)
+      apply or_iff_not_imp_right.mp (hB.smul_eq_or_disjoint ⟨k, _⟩)
       rw [Set.not_disjoint_iff_nonempty_inter]
       change (k • B ∩ B).Nonempty
       use a
@@ -583,7 +583,7 @@ end
       rw [← Subtype.coe_inj, SubMulAction.val_smul] at hk
       exact hk
   -- Conclusion of the proof : B = ⊤
-  rw [eq_top_iff]
+  rw [← Set.univ_subset_iff]
   intro x _
   obtain ⟨b, hb⟩ := h1.nonempty
   obtain ⟨⟨g, hg⟩, hgbx : g • b = x⟩ := exists_smul_eq G b x
@@ -591,7 +591,7 @@ end
     rw [← hgbx, ← this, Set.smul_mem_smul_set_iff]
     exact hsc_le_B hb
   -- g • B = B,
-  apply or_iff_not_imp_right.mp (IsBlock.def_one.mp hB ⟨g, hg⟩)
+  apply or_iff_not_imp_right.mp (hB.smul_eq_or_disjoint ⟨g, hg⟩)
   rw [Set.not_disjoint_iff_nonempty_inter]
   change (g • B ∩ B).Nonempty
   apply Set.ncard_pigeonhole

@@ -279,7 +279,7 @@ theorem _root_.MulAction.isTrivialBlock_or_2_mul_ncard_le_card  {G : Type*} [Gro
     {B : Set α} (hB : IsBlock G B) :
     IsTrivialBlock B ∨ (2 * Set.ncard B ≤ Nat.card α) := by
   by_cases hBne : Set.Nonempty B
-  · obtain ⟨m, hm⟩ := ncard_of_block_divides hB hBne
+  · obtain ⟨m, hm⟩ := hB.ncard_dvd_card hBne
     match m with
     | 0 =>
       left; left
@@ -288,7 +288,7 @@ theorem _root_.MulAction.isTrivialBlock_or_2_mul_ncard_le_card  {G : Type*} [Gro
     | 1 =>
       left; right
       simp only [mul_one] at hm
-      rw [Set.eq_top_iff_ncard, ← hm, Nat.card_eq_fintype_card]
+      rw [← Set.top_eq_univ, Set.eq_top_iff_ncard, ← hm, Nat.card_eq_fintype_card]
     | m + 2 =>
       right
       rw [hm, mul_comm, add_comm, mul_add]
@@ -377,7 +377,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
       apply hB_ne_sc B hB
       apply Set.Subset.antisymm hBsc
       intro x hx
-      rw [← Subtype.coe_mk x _, ← Set.mem_preimage, hB', Set.top_eq_univ]
+      rw [← Subtype.coe_mk x _, ← Set.mem_preimage, hB']
       apply Set.mem_univ
       exact hx
     -- IsTrivialBlock (Subtype.val ⁻¹' B : Set (sᶜ : Set α)),
@@ -389,7 +389,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
         toFun := Subtype.val
         map_smul' := fun ⟨m, _⟩ x => by
           simp only [SMul.smul_stabilizer_def, φ'] }
-      apply MulAction.IsBlock_preimage f' hB
+      apply hB.preimage f'
     -- is_preprimitive (stabilizer G (sᶜ : set α)) (sᶜ : set α)
     let φ : stabilizer G (sᶜ : Set α) → Equiv.Perm (sᶜ : Set α) := MulAction.toPerm
     let f : (sᶜ : Set α) →ₑ[φ] (sᶜ : Set α) := {
@@ -432,7 +432,6 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
           rw [← Subtype.coe_mk x _]
           rw [← Set.mem_preimage]
           rw [hB']
-          rw [Set.top_eq_univ]
           apply Set.mem_univ
           exact hx
         have : ∃ g' ∈ G, g' • s ≠ s := by
@@ -443,7 +442,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
           exact le_of_lt hG
           intro g' hg'; rw [mem_stabilizer_iff]; exact h g' hg'
         obtain ⟨g', hg', hg's⟩ := this
-        cases' IsBlock.def_one.mp hB ⟨g', hg'⟩ with h h
+        cases' hB.smul_eq_or_disjoint ⟨g', hg'⟩ with h h
         · -- case g' • B = B : absurd, since B = s and choice of g'
           exfalso
           apply hg's; rw [← hBs']; exact h
@@ -453,7 +452,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
             apply Function.Bijective.injective
             apply MulAction.bijective
           apply hB_not_le_sc ((⟨g', hg'⟩ : G) • B)
-          exact IsBlock_of_block _ hB
+          exact hB.translate _
           rw [← hBs']
           apply Disjoint.subset_compl_right
           exact h
@@ -466,7 +465,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
         toFun := Subtype.val
         map_smul' := fun ⟨m, _⟩ x => by
           simp only [SMul.smul_stabilizer_def, φ'] }
-      apply MulAction.IsBlock_preimage f' hB
+      apply hB.preimage f'
     -- IsPreprimitive (stabilizer G s) s
     let φ : stabilizer G s → Equiv.Perm s := MulAction.toPerm
     let f : s →ₑ[φ] s := {
@@ -505,7 +504,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
         rw [← hkbx, ← this, Set.smul_mem_smul_set_iff]
         exact hb
       -- k • B = B,
-      apply or_iff_not_imp_right.mp (IsBlock.def_one.mp hB ⟨k, _⟩)
+      apply or_iff_not_imp_right.mp (hB.smul_eq_or_disjoint ⟨k, _⟩)
       · rw [Set.not_disjoint_iff_nonempty_inter]
         change (k • B ∩ B).Nonempty
         use a
@@ -538,7 +537,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
         exact h1
       simp only [Nat.card_eq_fintype_card, ENat.card_eq_coe_fintype_card, le_refl]
   -- Conclusion of the proof : B = ⊤
-  rw [eq_top_iff]
+  rw [← Set.univ_subset_iff]
   intro x _
   obtain ⟨b, hb⟩ := h1
   obtain ⟨⟨g, hg⟩, hgbx : g • b = x⟩ := exists_smul_eq G b x
@@ -546,7 +545,7 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
     rw [← hgbx, ← this, Set.smul_mem_smul_set_iff]
     exact hsc_le_B hb
   -- g • B = B,
-  apply or_iff_not_imp_right.mp (IsBlock.def_one.mp hB ⟨g, hg⟩)
+  apply or_iff_not_imp_right.mp (hB.smul_eq_or_disjoint ⟨g, hg⟩)
   rw [Set.not_disjoint_iff_nonempty_inter]
   change (g • B ∩ B).Nonempty
   apply Set.ncard_pigeonhole
