@@ -57,7 +57,7 @@ theorem commutator_le_iwasawa (is_qprim : IsQuasiPreprimitive M α) (IwaS : Iwas
   have is_transN := is_qprim.isPretransitive_of_normal hNX
   have ntα : Nontrivial α := nontrivial_of_fixedPoints_ne_univ hNX
   obtain a : α := Nontrivial.to_nonempty.some
-  refine contains_commutators_of N nN (IwaS.T a) ?_ (IwaS.is_comm a)
+  refine Subgroup.Normal.commutator_le_of_self_sup_commutative_eq_top ?_ (IwaS.is_comm a)
   -- by contains_commutators_of, it suffices to prove that N ⊔ IwaS.T x = ⊤
   rw [eq_top_iff, ← IwaS.is_generator, iSup_le_iff]
   intro x

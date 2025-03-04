@@ -25,7 +25,6 @@ import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.Perm.List
 import Mathlib.GroupTheory.Perm.Cycle.Concrete
 
-
 open scoped BigOperators Pointwise Cardinal
 
 -- open scoped Classical

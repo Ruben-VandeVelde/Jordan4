@@ -10,7 +10,6 @@ import Jordan.Mathlib.Pretransitive
 import Jordan.Mathlib.Set
 import Jordan.Mathlib.Partitions
 import Jordan.SubMulActions
-import Jordan.Mathlib.Commutators
 
 -- import Jordan.EquivariantMap
 import Jordan.MaximalSubgroups

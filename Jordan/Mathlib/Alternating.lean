@@ -6,7 +6,8 @@ Authors: Antoine Chambert-Loir
 ! This file was ported from Lean 3 source module for_mathlib.alternating
 -/
 
-import Jordan.Mathlib.Commutators
+import Mathlib.GroupTheory.QuotientGroup.Basic
+import Mathlib.GroupTheory.Abelianization
 import Mathlib.Tactic.Group
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
@@ -80,7 +81,7 @@ theorem alternatingGroup_is_perfect (h5 : 5 ≤ Fintype.card α) :
 /-- If n ≥ 5, then the alternating group on n letters is perfect (subgroup version)-/
 theorem alternatingGroup_is_perfect' (h5 : 5 ≤ Fintype.card α) :
     ⁅alternatingGroup α, alternatingGroup α⁆ = alternatingGroup α := by
-  rw [← Subgroup.commutator_eq', alternatingGroup_is_perfect h5, Subgroup.map_top_eq_range,
+  rw [← Subgroup.map_subtype_commutator, alternatingGroup_is_perfect h5, ← MonoidHom.range_eq_map,
     Subgroup.range_subtype]
 
 theorem alternatingGroup.commutator_group_le :
