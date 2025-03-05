@@ -997,20 +997,6 @@ theorem φ_eq'2 (k : MulAction.stabilizer (ConjAct (Equiv.Perm α)) g)
 
 variable {g}
 
-theorem _root_.Equiv.Perm.existsBasis (g : Equiv.Perm α) :
-    Nonempty (Equiv.Perm.Basis g) := by
-  suffices hsupp_ne :
-    ∀ c : g.cycleFactorsFinset, (c : Equiv.Perm α).support.Nonempty by
-    exact ⟨fun c ↦ (hsupp_ne c).choose, fun c ↦ (hsupp_ne c).choose_spec⟩
-  intro c
-  exact Equiv.Perm.IsCycle.nonempty_support (Equiv.Perm.mem_cycleFactorsFinset_iff.mp c.prop).1
-
--- delete?
-theorem _root_.Equiv.Perm.Basis.mem_support'
-    (a : Equiv.Perm.Basis g) (c : g.cycleFactorsFinset) :
-    a c ∈ Equiv.Perm.support g :=
-  Equiv.Perm.mem_cycleFactorsFinset_support_le c.prop (Equiv.Perm.Basis.mem_support_self a c)
-
 /- variable (a : g.cycleFactorsFinset → α)
   (ha : ∀ c : g.cycleFactorsFinset, a c ∈ (c : Equiv.Perm α).support) -/
 
@@ -1193,7 +1179,7 @@ theorem k_apply_of_not_mem_support {τ : Equiv.Perm g.cycleFactorsFinset} (x : �
   obtain ⟨⟨c, i⟩, rfl⟩ := hyp
   apply hx
   rw [Kf_def, Equiv.Perm.zpow_apply_mem_support]
-  apply Equiv.Perm.Basis.mem_support'
+  apply Equiv.Perm.mem_cycleFactorsFinset_support_le c.prop (a.mem_support_self c)
   -- exact ha'2 ha c
 
 theorem mem_support_iff_exists_Kf (a : Equiv.Perm.Basis g) (x : α) :
@@ -1450,7 +1436,7 @@ theorem hφ'_is_rightInverse (τ : Iφ g) :
   exact (k_cycle_apply τ.prop ⟨c, hc⟩ x)
 
 theorem Iφ_eq_range : Iφ g = (φ g).range := by
-  obtain ⟨a⟩ := g.existsBasis
+  obtain ⟨a⟩ := Equiv.Perm.Basis.nonempty g
   ext τ
   constructor
   · intro hτ
@@ -2794,7 +2780,7 @@ theorem count_le_one_of_mem_kerφ
   push_neg at hm
   obtain ⟨c, hc, d, hd, hm, hm'⟩ := hm
   let τ : Equiv.Perm g.cycleFactorsFinset := Equiv.swap ⟨c, hc⟩ ⟨d, hd⟩
-  obtain ⟨a⟩ := g.existsBasis
+  obtain ⟨a⟩ := Equiv.Perm.Basis.nonempty g
   suffices hτ : τ ∈ OnCycleFactors.Iφ g by
     let k : Equiv.Perm α := ConjAct.ofConjAct (φ' a ⟨τ, hτ⟩ : ConjAct (Equiv.Perm α))
     have hk2 : ∀ c : g.cycleFactorsFinset, ConjAct.toConjAct k • (c : Equiv.Perm α) = τ c := by
