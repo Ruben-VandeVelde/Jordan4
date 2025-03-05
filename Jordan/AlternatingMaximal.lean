@@ -44,31 +44,10 @@ theorem MulAction.stabilizer_subgroupOf_eq {a : α} :
 example (K K' : Subgroup G) : K < K' ↔ K ≤ K' ∧ K ≠ K' :=
   lt_iff_le_and_ne
 
-theorem Subgroup.map_iff_mono_of_injective {f : G →* H} {K K' : Subgroup G}
-    (hf : Function.Injective f) : K ≤ K' ↔ Subgroup.map f K ≤ Subgroup.map f K' :=
-  by
-  constructor
-  exact Subgroup.map_mono
-  · intro h
-    intro x hx
-    suffices f x ∈ Subgroup.map f K' by
-      simp only [Subgroup.mem_map] at this
-      obtain ⟨y, hy, hx⟩ := this
-      rw [← hf hx]; exact hy
-    apply h
-    rw [Subgroup.mem_map]
-    exact ⟨x, hx, rfl⟩
-
-theorem Subgroup.map_strict_mono_of_injective {f : G →* H} {K K' : Subgroup G}
-    (hf : Function.Injective f) :
-    K < K' ↔ Subgroup.map f K < Subgroup.map f K' := by
-  simp only [lt_iff_le_not_le]
-  simp_rw [← Subgroup.map_iff_mono_of_injective hf]
-
 theorem Subgroup.map_injective_of_injective {f : G →* H} {K K' : Subgroup G}
     (hf : Function.Injective f) :
     Subgroup.map f K = Subgroup.map f K' ↔ K = K' := by
-  simp only [le_antisymm_iff, ← Subgroup.map_iff_mono_of_injective hf]
+  simp only [le_antisymm_iff, Subgroup.map_le_map_iff_of_injective hf]
 
 end Junk
 
@@ -675,13 +654,7 @@ theorem isMaximalStab'
 
 theorem three_le {c n : ℕ} (h : 1 ≤ n) (h' : n < c) (hh' : c ≠ 2 * n) : 3 ≤ c :=
   by
-  cases' Nat.eq_or_lt_of_le h with h h
-  · rw [← h] at h' hh'
-    cases' Nat.eq_or_lt_of_le h' with h' h'
-    · exfalso; apply hh' h'.symm
-    exact h'
-  rw [Nat.succ_le_iff]
-  exact lt_of_le_of_lt h h'
+  omega
 
 /-- stabilizer (alternating_group α) s is a maximal subgroup of alternating_group α,
   provided s ≠ ⊥, s ≠ ⊤ and fintype.card α ≠ 2 * fintype.card ↥s) -/

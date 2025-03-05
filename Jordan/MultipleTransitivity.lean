@@ -62,22 +62,7 @@ end Monoid
 section Group
 
 variable (M α : Type _) [Group M] [MulAction M α]
-
-/-- Cardinal of an orbit vs index of stabilizers, in nat.card -/
-theorem card_orbit_eq_stabilizer_index {a : α} :
-  Set.ncard (orbit M a) = (stabilizer M a).index := by
-  rw [← Set.Nat.card_coe_set_eq]
-  apply Nat.card_congr
-  exact orbitEquivQuotientStabilizer M a
-
 variable {α}
-/-- Cardinal vs index of stabilizers, for a pretransitive action, in nat.card -/
-theorem stabilizer_index_of_pretransitive (h : IsPretransitive M α) (a : α) :
-    (stabilizer M a).index = Nat.card α := by
-  rw [← card_orbit_eq_stabilizer_index]
-  convert Set.ncard_univ α
-  exact orbit_eq_univ M a
-
 variable {M}
 
 theorem isPretransitive_of_subgroup {K : Subgroup M} (h : IsPretransitive K α) :
@@ -847,7 +832,7 @@ private theorem IsMultiplyPretransitive.index_of_fixing_subgroup_aux
       (Fintype.card α - 1).factorial by
     · rw [mul_comm] at this
       rw [hscard, mul_comm, ← mul_assoc, mul_comm, Nat.sub_add_eq, this]
-      rw [stabilizer_index_of_pretransitive M hGX a]
+      rw [index_stabilizer_of_transitive M a]
       rw [Nat.card_eq_fintype_card]
       apply Nat.mul_factorial_pred
       rw [Nat.ne_zero_iff_zero_lt]
