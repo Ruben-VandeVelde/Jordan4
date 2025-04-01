@@ -542,7 +542,6 @@ theorem isSwap_iff_cycleType_eq {g : Equiv.Perm α} :
     rw [Equiv.Perm.IsCycle.cycleType (Equiv.Perm.IsSwap.isCycle hg)]
     rw [← card_support_eq_two] at hg
     rw [hg]
-    simp only [Multiset.coe_singleton]
   · intro hg
     suffices hg' : g.IsCycle by
       rw [Equiv.Perm.IsCycle.cycleType hg'] at hg
@@ -652,7 +651,7 @@ theorem closure_perm22_eq_top (hα : 5 ≤ Fintype.card α) :
   intro n
   induction' n with n hrec
   · intro l _ hn
-    simp only [Nat.zero_eq, MulZeroClass.mul_zero, List.length_eq_zero] at hn
+    simp only [Nat.zero_eq, MulZeroClass.mul_zero, List.length_eq_zero_iff] at hn
     rw [hn, List.prod_nil]
     refine one_mem _
   · intro l hl hn

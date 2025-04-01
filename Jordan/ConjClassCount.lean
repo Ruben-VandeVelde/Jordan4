@@ -6,26 +6,14 @@ Authors: Antoine Chambert-Loir
 ! This file was ported from Lean 3 source module conj_class_count
 -/
 
-import Mathlib.Algebra.EuclideanDomain.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.GroupTheory.GroupAction.SubMulAction
-import Mathlib.GroupTheory.GroupAction.Embedding
-import Mathlib.GroupTheory.Perm.Cycle.Type
-import Mathlib.GroupTheory.Perm.List
-import Mathlib.GroupTheory.Perm.Cycle.Basic
-import Mathlib.GroupTheory.Perm.Cycle.Concrete
-import Mathlib.GroupTheory.GroupAction.Quotient
-import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Mathlib.Data.Set.Card
--- import Jordan.NoncommCoprod
 import Jordan.PermFibration
-import Mathlib.GroupTheory.GroupAction.FixingSubgroup
-import Mathlib.Algebra.Group.Pointwise.Finset.Basic
-import Mathlib.GroupTheory.GroupAction.ConjAct
-import Mathlib.GroupTheory.Perm.Cycle.Basic
-import Mathlib.GroupTheory.Perm.Cycle.Factors
-import Mathlib.GroupTheory.Perm.Cycle.PossibleTypes
-import Mathlib.GroupTheory.Perm.Support
+import Mathlib.Algebra.Group.ConjFinite
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Analysis.Normed.Ring.Lemmas
+import Mathlib.CategoryTheory.Action.Concrete
+import Mathlib.GroupTheory.Perm.Centralizer
+import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.Order.CompletePartialOrder
 
 /-# Centralizer of a permutation and cardinality of conjugacy classes
   # in the symmetric and alternating groups
@@ -528,29 +516,6 @@ theorem Equiv.Perm.conj_support_eq (k : ConjAct (Equiv.Perm α)) (g : Equiv.Perm
   simp only [Equiv.Perm.coe_mul, Function.comp_apply, ConjAct.ofConjAct_inv]
   apply Equiv.apply_eq_iff_eq_symm_apply
 
-theorem Equiv.Perm.cycleFactorsFinset_conj (g k : Equiv.Perm α) :
-    (k * g * k⁻¹).cycleFactorsFinset = Finset.map (MulAut.conj k).toEquiv.toEmbedding g.cycleFactorsFinset
-       := by
-  ext c
-  rw [Finset.mem_map_equiv]
-  rw [← Equiv.Perm.mem_cycleFactorsFinset_conj g k]
-  simp [mul_assoc]
-
-/-- A permutation `c` is a cycle of `g` iff `k • c` is a cycle of `k • g` -/
-theorem Equiv.Perm.mem_cycleFactorsFinset_conj'
-    (k : ConjAct (Equiv.Perm α)) (g c : Equiv.Perm α) :
-    k • c ∈ (k • g).cycleFactorsFinset ↔ c ∈ g.cycleFactorsFinset := by
-  simp only [ConjAct.smul_def]
-  apply Equiv.Perm.mem_cycleFactorsFinset_conj
-
-theorem Equiv.Perm.cycleFactorsFinset_conj_eq
-    (k : ConjAct (Equiv.Perm α)) (g : Equiv.Perm α) :
-    Equiv.Perm.cycleFactorsFinset (k • g) = k • Equiv.Perm.cycleFactorsFinset g := by
-  ext c
-  rw [← Equiv.Perm.mem_cycleFactorsFinset_conj' k⁻¹ (k • g) c]
-  simp only [inv_smul_smul]
-  exact Finset.inv_smul_mem_iff
-
 /-
 theorem ConjAct.mem_stabilizer_iff {G : Type*} [Group G] (k : ConjAct G) (g : G) :
     k ∈ MulAction.stabilizer (ConjAct G) g ↔
@@ -1032,19 +997,6 @@ theorem φ_eq'2 (k : MulAction.stabilizer (ConjAct (Equiv.Perm α)) g)
 
 variable {g}
 
-class _root_.Equiv.Perm.Basis (g : Equiv.Perm α) where
-  /-- A choice of elements in each cycle -/
-  (toFun : g.cycleFactorsFinset → α)
-  /-- For each cycle, the chosen element belongs to the cycle -/
-  (mem_support : ∀ c : g.cycleFactorsFinset, toFun c ∈ (c : Equiv.Perm α).support)
-
-instance (g : Equiv.Perm α) :
-  DFunLike (Equiv.Perm.Basis g) (g.cycleFactorsFinset) (fun _ => α) := {
-  coe := fun a => a.toFun
-  coe_injective' := by
-    intro a a' _
-    cases a; cases a'; congr }
-
 theorem _root_.Equiv.Perm.existsBasis (g : Equiv.Perm α) :
     Nonempty (Equiv.Perm.Basis g) := by
   suffices hsupp_ne :
@@ -1057,14 +1009,7 @@ theorem _root_.Equiv.Perm.existsBasis (g : Equiv.Perm α) :
 theorem _root_.Equiv.Perm.Basis.mem_support'
     (a : Equiv.Perm.Basis g) (c : g.cycleFactorsFinset) :
     a c ∈ Equiv.Perm.support g :=
-  Equiv.Perm.mem_cycleFactorsFinset_support_le c.prop (a.mem_support c)
-
-theorem _root_.Equiv.Perm.Basis.cycleOf_eq
-    (a : Equiv.Perm.Basis g) (c : g.cycleFactorsFinset) :
-    g.cycleOf (a c) = c :=
-  (Equiv.Perm.cycle_is_cycleOf (a.mem_support c) c.prop).symm
-
-
+  Equiv.Perm.mem_cycleFactorsFinset_support_le c.prop (Equiv.Perm.Basis.mem_support_self a c)
 
 /- variable (a : g.cycleFactorsFinset → α)
   (ha : ∀ c : g.cycleFactorsFinset, a c ∈ (c : Equiv.Perm α).support) -/
@@ -1206,15 +1151,15 @@ theorem _root_.Equiv.Perm.Basis.Kf_factorsThrough (a : Equiv.Perm.Basis g)
   suffices hcd : c = d by
     rw [hcd] at He ⊢
     rw [g.zpow_eq_zpow_on_iff,
-      ← Equiv.Perm.cycle_is_cycleOf (a := a (e d)) (a.mem_support _) (e d).prop] at He
+      ← Equiv.Perm.cycle_is_cycleOf (a := a (e d)) (a.mem_support_self _) (e d).prop] at He
     rw [g.zpow_eq_zpow_on_iff,
-      ← Equiv.Perm.cycle_is_cycleOf (a := a (e' d)) (a.mem_support _) (e' d).prop, ← hee' d]
+      ← Equiv.Perm.cycle_is_cycleOf (a := a (e' d)) (a.mem_support_self _) (e' d).prop, ← hee' d]
     exact He
     · rw [← Equiv.Perm.mem_support, ← Equiv.Perm.cycleOf_mem_cycleFactorsFinset_iff,
-        ← Equiv.Perm.cycle_is_cycleOf (a := a (e' d)) (a.mem_support _) (e' d).prop]
+        ← Equiv.Perm.cycle_is_cycleOf (a := a (e' d)) (a.mem_support_self _) (e' d).prop]
       exact (e' d).prop
     · rw [← Equiv.Perm.mem_support, ← Equiv.Perm.cycleOf_mem_cycleFactorsFinset_iff,
-        ← Equiv.Perm.cycle_is_cycleOf (a := a (e d)) (a.mem_support _) (e d).prop]
+        ← Equiv.Perm.cycle_is_cycleOf (a := a (e d)) (a.mem_support_self _) (e d).prop]
       exact (e d).prop
   apply Equiv.injective e
   rw [← Subtype.coe_inj, Equiv.Perm.Basis.eq_cycleOf, Equiv.Perm.Basis.eq_cycleOf, He]
@@ -1259,14 +1204,14 @@ theorem mem_support_iff_exists_Kf (a : Equiv.Perm.Basis g) (x : α) :
     rw [← Equiv.Perm.cycleOf_mem_cycleFactorsFinset_iff] at hx
     use ⟨g.cycleOf x, hx⟩
     simp only [Kf_def, Equiv.Perm.coe_one, id]
-    let ha := a.mem_support ⟨g.cycleOf x, hx⟩
+    let ha := a.mem_support_self ⟨g.cycleOf x, hx⟩
     simp only [Subtype.coe_mk, Equiv.Perm.mem_support_cycleOf_iff] at ha
     obtain ⟨i, hi⟩ := ha.1.symm
     exact ⟨i, hi.symm⟩
   · rintro ⟨c, i, rfl⟩
     simp only [Kf_def, Equiv.Perm.zpow_apply_mem_support, Equiv.Perm.coe_one, id]
     apply Equiv.Perm.mem_cycleFactorsFinset_support_le c.prop
-    apply a.mem_support
+    apply a.mem_support_self
 
 theorem k_commute_zpow {τ : Equiv.Perm g.cycleFactorsFinset}
     (hτ : ∀ c, (τ c : Equiv.Perm α).support.card = (c : Equiv.Perm α).support.card) (j : ℤ) :
@@ -2932,7 +2877,7 @@ theorem count_le_one_of_mem_kerφ
             obtain ⟨cx, hcx⟩ := Equiv.Perm.sameCycle_of_mem_support (hksup hx)
             have hxcx : x ∈ (cx : Equiv.Perm α).support := by
               rw [Equiv.Perm.SameCycle.eq_cycleOf cx
-                (hcx (a cx) (a.mem_support cx)) (a.mem_support cx),
+                (hcx (a cx) (a.mem_support_self cx)) (a.mem_support_self cx),
                 Equiv.Perm.mem_support_cycleOf_iff]
               constructor; rfl; exact hksup hx
             suffices c = cx ∨ d = cx by
@@ -2940,7 +2885,7 @@ theorem count_le_one_of_mem_kerφ
               cases' this with hccx hdcx
               · apply Or.intro_left; rw [hccx]; exact hxcx
               · apply Or.intro_right; rw [hdcx]; exact hxcx
-            · obtain ⟨n, _, hnx⟩ := (hcx (a cx) (a.mem_support cx)).exists_pow_eq'
+            · obtain ⟨n, _, hnx⟩ := (hcx (a cx) (a.mem_support_self cx)).exists_pow_eq'
               rw [Equiv.Perm.mem_support, ← hnx] at hx
               specialize hk_apply cx 1
               simp only [pow_one] at hk_apply
@@ -2961,9 +2906,9 @@ theorem count_le_one_of_mem_kerφ
           suffices hx' : Equiv.Perm.cycleOf g x = c ∨ Equiv.Perm.cycleOf g x = d by
             obtain ⟨cx, hcx⟩ := Equiv.Perm.sameCycle_of_mem_support (x := x) ?_
             have hcx' := Equiv.Perm.SameCycle.eq_cycleOf cx
-              (hcx (a cx) (a.mem_support cx)) (a.mem_support cx)
+              (hcx (a cx) (a.mem_support_self cx)) (a.mem_support_self cx)
             obtain ⟨n, _, hnx⟩ := Equiv.Perm.SameCycle.exists_pow_eq'
-              (hcx (a cx) (a.mem_support cx))
+              (hcx (a cx) (a.mem_support_self cx))
             specialize hk_apply cx 1
             simp only [pow_one] at hk_apply
             rw [← hnx, Equiv.Perm.mem_support, hk_apply]
@@ -2973,8 +2918,8 @@ theorem count_le_one_of_mem_kerφ
               rw [Equiv.Perm.disjoint_iff_support_disjoint]
               rw [Finset.not_disjoint_iff]
               use a cx
-              apply And.intro (a.mem_support cx)
-              rw [← haτcx_eq_acx]; exact a.mem_support (τ cx)
+              apply And.intro (a.mem_support_self cx)
+              rw [← haτcx_eq_acx]; exact a.mem_support_self (τ cx)
             have this' := (Set.Pairwise.eq
               g.cycleFactorsFinset_pairwise_disjoint cx.prop (τ cx).prop this).symm
             rw [Subtype.coe_inj] at this'
@@ -3021,7 +2966,7 @@ theorem count_le_one_of_mem_kerφ
       by_cases hx : x ∈ g.support
       · -- obtain ⟨cx, hcx, hcx'⟩ := hsame_cycle x hx,
         obtain ⟨cx, hcx⟩ := Equiv.Perm.sameCycle_of_mem_support hx
-        obtain ⟨n, _, rfl⟩ := (hcx (a cx) (a.mem_support cx)).exists_pow_eq'
+        obtain ⟨n, _, rfl⟩ := (hcx (a cx) (a.mem_support_self cx)).exists_pow_eq'
         convert hk_apply cx 2 n
         suffices hτ2 : τ ^ 2 = 1 by
           rw [hτ2, Equiv.Perm.coe_one, id]

@@ -851,6 +851,7 @@ private theorem IsMultiplyPretransitive.index_of_fixing_subgroup_aux
       rw [stabilizer_index_of_pretransitive M hGX a]
       rw [Nat.card_eq_fintype_card]
       apply Nat.mul_factorial_pred
+      rw [Nat.ne_zero_iff_zero_lt]
       rw [Fintype.card_pos_iff]
       use a
   · rw [add_comm] at hscard
@@ -1077,7 +1078,7 @@ theorem IsMultiplyPretransitive.alternatingGroup_of_sub_two [DecidableEq α] :
       rw [Equiv.Perm.IsSwap.sign_eq]
       use y'.toFun ⟨n + 1, hg'1⟩; use y'.toFun ⟨n, hg'2⟩
       simp only [toFun_eq_coe, ne_eq, EmbeddingLike.apply_eq_iff_eq, Fin.mk.injEq,
-        add_right_eq_self, one_ne_zero, not_false_eq_true, and_self, g']
+        add_eq_left, one_ne_zero, not_false_eq_true, and_self, g']
     use ⟨g' * g, ?_⟩
     swap
     · rw [Equiv.Perm.mem_alternatingGroup]

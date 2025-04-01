@@ -99,7 +99,7 @@ theorem alternatingGroup.isCommutative_of_order_three {α : Type _} [Fintype α]
 private theorem aux_dvd_lemma {r p : ℕ} (hp : p.Prime) (h : r ∣ Nat.factorial p)
     (hr : ∀ {l : ℕ} (_ : l.Prime) (_ : l ∣ r), p ≤ l) : r ∣ p := by
   rw [← Nat.Coprime.dvd_mul_right _]
-  · rw [Nat.mul_factorial_pred (Nat.Prime.pos hp)]
+  · rw [Nat.mul_factorial_pred hp.ne_zero]
     exact h
   rw [Nat.coprime_iff_gcd_eq_one]
   by_contra h

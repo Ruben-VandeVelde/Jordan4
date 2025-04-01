@@ -810,7 +810,6 @@ theorem isPretransitive_of_cycle [DecidableEq α] {g : Equiv.Perm α}
 theorem Equiv.Perm.IsSwap.cycleType [DecidableEq α] {σ : Equiv.Perm α} (h : σ.IsSwap) :
     σ.cycleType = {2} := by
   simp only [h.isCycle.cycleType, Equiv.Perm.card_support_eq_two.mpr h]
-  simp only [Multiset.coe_singleton]
 
 theorem Equiv.Perm.IsSwap.orderOf [DecidableEq α] {σ : Equiv.Perm α} (h : σ.IsSwap) :
     orderOf σ = 2 := by

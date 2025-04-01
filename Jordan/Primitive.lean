@@ -99,14 +99,14 @@ variable (G : Type _) (X : Type _)
 -- Note : if the action is degenerate, singletons may not be blocks.
 /-- An action is preprimitive if it is pretransitive and
   the only blocks are the trivial ones -/
-class IsPreprimitive [SMul G X] extends IsPretransitive G X : Prop where
+class IsPreprimitive [SMul G X] : Prop extends IsPretransitive G X where
 /-- An action is preprimitive if it is pretransitive and
 the only blocks are the trivial ones -/
   has_trivial_blocks' : ∀ {B : Set X}, IsBlock G B → IsTrivialBlock B
 
 /-- A `mul_action` of a group is quasipreprimitive if any normal subgroup
   that has no fixed point acts pretransitively -/
-class IsQuasipreprimitive [Group G] [MulAction G X] extends IsPretransitive G X : Prop where
+class IsQuasipreprimitive [Group G] [MulAction G X] : Prop extends IsPretransitive G X where
 /-- A `mul_action` of a group is quasipreprimitive if any normal subgroup
   that has no fixed point acts pretransitively -/
   pretransitive_of_normal :

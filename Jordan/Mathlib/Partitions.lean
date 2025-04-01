@@ -134,7 +134,7 @@ theorem Setoid.IsPartition.card_set_eq_sum_parts {α : Type _} [Fintype α] (s :
     rw [Setoid.IsPartition.sUnion_eq_univ hP]
     exact (Set.inter_univ s).symm
   · intro t ht u hu htu
-    simp only [Set.mem_toFinset] at ht hu
+    simp only [Set.coe_toFinset] at ht hu
     simp only [← Finset.disjoint_coe, Set.coe_toFinset]
     exact
       Set.disjoint_of_subset Set.inter_subset_right Set.inter_subset_right
