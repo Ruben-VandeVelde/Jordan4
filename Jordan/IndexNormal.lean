@@ -166,7 +166,7 @@ theorem Equiv.Perm.is_prod_swap_list (g : Equiv.Perm α) :
   induction' g using Equiv.Perm.swap_induction_on with f x y hxy hf
   · use List.nil
     constructor
-    · intro s hs; exfalso; exact List.not_mem_nil s hs
+    · intro s hs; exfalso; exact List.not_mem_nil hs
     · simp only [List.prod_nil]
   · obtain ⟨l, hl, hf⟩ := hf
     use Equiv.swap x y::l

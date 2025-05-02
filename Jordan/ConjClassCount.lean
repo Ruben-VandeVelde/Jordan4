@@ -489,7 +489,7 @@ theorem Equiv.permWithCycleType_nonempty_iff {m : Multiset ℕ} :
       · -- length >= 1
         intro a h
         apply Nat.not_succ_le_self 1
-        conv_rhs => rw [← List.length_singleton a]; rw [← h]
+        conv_rhs => rw [← List.length_singleton, ← h]
         exact hp2 x hx
     · -- cycles
       intro g
@@ -1605,7 +1605,7 @@ lemma _root_.Finset.noncommProd_eq_one
     s.noncommProd f comm = 1 := by
   induction s using Finset.induction_on with
   | empty => simp only [Finset.noncommProd_empty]
-  | insert ha hs =>
+  | insert _ _ ha hs =>
       rw [Finset.noncommProd_insert_of_not_mem _ _ _ _ ha]
       rw [hf _ (Finset.mem_insert_self _ _), one_mul]
       apply hs
@@ -2452,8 +2452,8 @@ theorem Equiv.Perm.conj_class_card_mul_eq (g : Equiv.Perm α) :
   rw [MulAction.card_orbit_mul_card_stabilizer_eq_card_group (ConjAct (Equiv.Perm α)) g]
   rw [ConjAct.card, Fintype.card_perm]
 
-theorem Multiset.prod_pos {R : Type _} [StrictOrderedCommSemiring R] [Nontrivial R] (m : Multiset R)
-    (h : ∀ a ∈ m, (0 : R) < a) : 0 < m.prod :=
+theorem Multiset.prod_pos {R : Type _} [CommSemiring R] [PartialOrder R] [IsStrictOrderedRing R]
+    [Nontrivial R] (m : Multiset R) (h : ∀ a ∈ m, (0 : R) < a) : 0 < m.prod :=
   by
   induction' m using Multiset.induction with a m ih
   · simp

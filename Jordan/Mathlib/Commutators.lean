@@ -70,7 +70,7 @@ theorem quotient_comm_contains_commutators_iff {N : Subgroup G} (nN : N.Normal) 
 /-- If N is a normal subgroup, H a commutative subgroup such that H ⊔ N = ⊤,
 then N contains the derived subgroup. -/
 theorem contains_commutators_of (N : Subgroup G) (nN : N.Normal) (H : Subgroup G) (hHN : N ⊔ H = ⊤)
-    (hH : Subgroup.IsCommutative H) : commutator G ≤ N := by
+    (hH : IsMulCommutative H) : commutator G ≤ N := by
   -- Il suffit de prouver que Q = G ⧸ N est commutatif
   -- let Q := quotient_group.quotient N,
   rw [← quotient_comm_contains_commutators_iff nN]

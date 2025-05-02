@@ -256,7 +256,7 @@ theorem V4_is_of_exponent_two (hα4 : Fintype.card α = 4) :
     norm_num
 
 theorem V4_isCommutative (hα4 : Fintype.card α = 4) :
-    (V4 α).IsCommutative := by
+    IsMulCommutative (V4 α) := by
   refine { is_comm := isCommutative_of_exponent_two (V4_is_of_exponent_two α hα4) }
 
 theorem Subgroup.quotient_isCommutative_iff_commutator_le {G : Type _} [Group G] (H : Subgroup G)

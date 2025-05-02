@@ -188,7 +188,7 @@ def iwasawa_two : IwasawaStructure (Equiv.Perm α) (Nat.Combination α 2) where
       let _ : CommGroup (Perm s) :=
       { __ := (inferInstance : Group (Perm s)),
         mul_comm := this.comm }
-      apply MonoidHom.range_isCommutative
+      apply MonoidHom.range_isMulCommutative
     rw [Equiv.Perm.isCommutative_iff]
     apply le_of_eq
     simp only [Finset.mem_coe, Fintype.card_coe]

@@ -413,11 +413,11 @@ def Iw3 : IwasawaStructure (alternatingGroup α) (Nat.Combination α 3) where
     (Equiv.Perm.ofSubtype : Equiv.Perm (s : Finset α) →* Equiv.Perm α)
       (alternatingGroup (s : Finset α))).subgroupOf (alternatingGroup α)
   is_comm := fun ⟨s, hs⟩ => by
-    have : (alternatingGroup (s : Finset α)).IsCommutative :=
+    have : IsMulCommutative (alternatingGroup (s : Finset α)) :=
       { is_comm := by
           apply alternatingGroup.isCommutative_of_order_three
           rw [Fintype.card_coe]; exact hs }
-    apply Subgroup.subgroupOf_isCommutative _
+    apply Subgroup.subgroupOf_isMulCommutative _
     -- apply Subgroup.map_isCommutative (alternatingGroup (s : Finset α))
   is_conj := fun g ⟨s, _⟩ => Iw_is_conj_alt s g
   is_generator := Iw_is_generator_alt
@@ -778,10 +778,10 @@ def Iw4 (hα : 5 ≤ Fintype.card α) : IwasawaStructure (alternatingGroup α) (
   T s := Iw4T (s : Finset α)
   is_comm := fun ⟨s, hs⟩ => by
     have hs' : Fintype.card (s : Finset α) = 4 := by rw [Fintype.card_coe]; exact hs
-    have : (commutator (alternatingGroup (s : Finset α))).IsCommutative := by
+    have : IsMulCommutative (commutator (alternatingGroup (s : Finset α))) := by
       rw [← V4_eq_commutator _ hs']
       apply V4_isCommutative _ hs'
-    apply Subgroup.subgroupOf_isCommutative _
+    apply Subgroup.subgroupOf_isMulCommutative _
   is_conj := fun g ⟨s, hs⟩ => Iw4T_is_conj g s hs
   is_generator := Iw4_is_generator_alt hα
 
