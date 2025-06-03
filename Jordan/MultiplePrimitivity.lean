@@ -112,7 +112,7 @@ theorem stabilizer.isMultiplyPreprimitive
     apply isPreprimitive_of_surjective_map
         (SubMulAction.equivariantMap_ofFixingSubgroup_to_ofStabilizer_bijective M a s).surjective
     apply hn.right
-    rw [Set.encard_insert_of_not_mem, Subtype.coe_injective.encard_image, hs, Nat.cast_succ]
+    rw [Set.encard_insert_of_notMem, Subtype.coe_injective.encard_image, hs, Nat.cast_succ]
     · intro ha
       simp only [Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right] at ha
       obtain ⟨b, _⟩ := ha
@@ -131,7 +131,7 @@ theorem stabilizer.isMultiplyPreprimitive
           rw [← Set.nonempty_def, Set.nonempty_iff_ne_empty]
           intro h
           apply not_lt.mpr hn
-          rw [h, Set.encard_empty, zero_add, ← Nat.cast_one, Nat.cast_inj, Nat.succ_inj'] at hs
+          rw [h, Set.encard_empty, zero_add, ← Nat.cast_one, Nat.cast_inj, Nat.succ_inj] at hs
           simp only [← hs, zero_lt_one]
         obtain ⟨b, hb⟩ := this
         obtain ⟨g, hg : g • b = a⟩ := h_eq b a
@@ -165,7 +165,7 @@ theorem stabilizer.isMultiplyPreprimitive
           (SubMulAction.scalarMap_ofFixingSubgroupOfStabilizer_bijective M a t).surjective
           (SubMulAction.equivariantMap_ofFixingSubgroup_to_ofStabilizer_bijective M a t)]
       · apply hn_0.right t
-        rw [← hs, hst, Set.encard_insert_of_not_mem, Subtype.coe_injective.encard_image]
+        rw [← hs, hst, Set.encard_insert_of_notMem, Subtype.coe_injective.encard_image]
         rintro ⟨x, hx⟩
         apply x.prop; rw [hx.right]; simp only [Set.mem_singleton]
 

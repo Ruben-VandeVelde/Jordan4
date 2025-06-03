@@ -45,7 +45,7 @@ theorem ofSubtype_mem_stabilizer' (s : Set α) (g : Equiv.Perm (sᶜ : Set α)) 
   intro x hx
   rw [Set.mem_smul_set]
   use x, hx
-  simp [Equiv.Perm.ofSubtype_apply_of_not_mem g (Set.not_mem_compl_iff.mpr hx)]
+  simp [Equiv.Perm.ofSubtype_apply_of_not_mem g (Set.notMem_compl_iff.mpr hx)]
 
 theorem stabilizer_isPreprimitive (s : Set α) : IsPreprimitive (stabilizer (Equiv.Perm α) s) s :=
   by
@@ -128,7 +128,7 @@ theorem stabilizer.isPreprimitive (s : Set α) (hs : (sᶜ : Set α).Nontrivial)
       simp only [Subgroup.mk_smul, Equiv.Perm.smul_def, Equiv.Perm.coe_mul, Function.comp_apply]
       rw [Equiv.Perm.ofSubtype_apply_of_not_mem k _]
       exact Equiv.Perm.ofSubtype_apply_coe g x
-      rw [Set.not_mem_compl_iff]; exact x.prop
+      rw [Set.notMem_compl_iff]; exact x.prop
   -- ∃ k : equiv.perm (sᶜ : set α), equiv.perm.sign k = -1,
   obtain ⟨a, ha, b, hb, hab⟩ := hs
   use Equiv.swap ⟨a, ha⟩ ⟨b, hb⟩

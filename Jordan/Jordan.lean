@@ -410,7 +410,7 @@ theorem is_two_pretransitive_weak_jordan [DecidableEq α]
         suffices s = g • s by
           apply hb
           rw [this]
-          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_not_mem] at hgb
+          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_notMem] at hgb
           exact hgb
         apply Set.eq_of_subset_of_ncard_le
         · exact subset_trans h Set.inter_subset_right
@@ -567,7 +567,7 @@ theorem is_two_preprimitive_weak_jordan [DecidableEq α]
         suffices s = g • s by
           apply hb
           rw [this]
-          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_not_mem] at hgb
+          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_notMem] at hgb
           exact hgb
         apply Set.eq_of_subset_of_ncard_le
         · exact subset_trans h Set.inter_subset_right
@@ -684,7 +684,7 @@ theorem isMultiplyPreprimitive_jordan
       · -- t.card = Nat.succ n
         rw [← Set.ncard_image_of_injective t Subtype.val_injective]
         apply Nat.add_right_cancel
-        rw [← Set.ncard_insert_of_not_mem ha', ← hst, hsn]
+        rw [← Set.ncard_insert_of_notMem ha', ← hst, hsn]
       · -- 1 + n.succ < Fintype.card (SubMulAction.ofStabilizer G α a)
         change _ < Fintype.card (SubMulAction.ofStabilizer G a).carrier
         rw [← Nat.card_eq_fintype_card, Set.Nat.card_coe_set_eq]
@@ -784,7 +784,7 @@ theorem isPretransitive_of_cycle [DecidableEq α] {g : Equiv.Perm α}
     x ∈ SubMulAction.ofFixingSubgroup G ((↑g.support : Set α)ᶜ) := by
     intro x
     rw [SubMulAction.mem_ofFixingSubgroup_iff]
-    simp only [Set.mem_compl_iff, Finset.mem_coe, Equiv.Perm.not_mem_support]
+    simp only [Set.mem_compl_iff, Finset.mem_coe, Equiv.Perm.notMem_support]
     rfl
   suffices ∀ x ∈ SubMulAction.ofFixingSubgroup G ((↑g.support : Set α)ᶜ),
       ∃ k : fixingSubgroup G ((↑g.support : Set α)ᶜ), x = k • a
@@ -802,7 +802,7 @@ theorem isPretransitive_of_cycle [DecidableEq α] {g : Equiv.Perm α}
     by
     simp_rw [mem_fixingSubgroup_iff G]
     intro y hy
-    simpa only [Set.mem_compl_iff, Finset.mem_coe, Equiv.Perm.not_mem_support] using hy
+    simpa only [Set.mem_compl_iff, Finset.mem_coe, Equiv.Perm.notMem_support] using hy
   let g' : fixingSubgroup (↥G) ((↑g.support : Set α)ᶜ) := ⟨(⟨g, hg⟩ : ↥G), hg'⟩
   obtain ⟨i, hi⟩ := hgc ((hs x).mpr hx)
   use g' ^ i; exact hi.symm

@@ -458,7 +458,7 @@ end
     rw [← Set.disjoint_compl_right_iff_subset, ← hBsc]
     apply or_iff_not_imp_left.mp (IsBlock.def_one.mp hB k)
     intro h
-    apply Set.not_mem_empty a
+    apply Set.notMem_empty a
     rw [← Set.inter_compl_self s]
     constructor
     · exact ha
@@ -542,10 +542,10 @@ end
   unfold IsTrivialBlock
   rw [or_iff_not_imp_left]
   intro hB'
-  obtain ⟨a, ha, ha'⟩ := Set.not_subset_iff_exists_mem_not_mem.mp
+  obtain ⟨a, ha, ha'⟩ := Set.not_subset_iff_exists_mem_notMem.mp
     fun h => hB' ((hB_not_le_sc B hB) h)
-  rw [Set.not_mem_compl_iff] at ha'
-  obtain ⟨b, hb, hb'⟩ := Set.not_subset_iff_exists_mem_not_mem.mp
+  rw [Set.notMem_compl_iff] at ha'
+  obtain ⟨b, hb, hb'⟩ := Set.not_subset_iff_exists_mem_notMem.mp
     fun h => hB' ((hB_not_le_s B hB) h)
   rw [← Set.mem_compl_iff] at hb'
   have hsc_le_B : sᶜ ⊆ B := by

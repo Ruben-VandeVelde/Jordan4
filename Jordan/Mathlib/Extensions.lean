@@ -48,7 +48,7 @@ theorem equiv_fin_of_partENat_card_eq {m : ℕ} (hα : ENat.card α = m) :
 /-- Given an embedding and a strict nat.card inequality, get another element  -/
 theorem gimme_another {m : ℕ} (f : Fin m → α) (hα : ↑m < ENat.card α) :
     ∃ a : α, a ∉ Set.range f := by
-  rw [← Set.ne_univ_iff_exists_not_mem]
+  rw [← Set.ne_univ_iff_exists_notMem]
   intro h
   rw [← not_le] at hα
   apply hα

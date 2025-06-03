@@ -832,7 +832,7 @@ private theorem IsMultiplyPretransitive.index_of_fixing_subgroup_aux
     rw [hat']
     suffices ¬ a ∈ (Subtype.val '' t) by
       rw [add_comm]
-      convert Set.ncard_insert_of_not_mem this ?_
+      convert Set.ncard_insert_of_notMem this ?_
       rw [Set.ncard_image_of_injective _ Subtype.coe_injective]
       apply Set.toFinite
     intro h
@@ -841,7 +841,7 @@ private theorem IsMultiplyPretransitive.index_of_fixing_subgroup_aux
     simp only [Set.mem_singleton_iff]
     rw [← hb']
   have htcard : t.ncard = k := by
-    rw [← Nat.succ_inj', Nat.succ_eq_add_one, Nat.succ_eq_add_one, ← hs, hscard, add_comm]
+    rw [← Nat.succ_inj, Nat.succ_eq_add_one, Nat.succ_eq_add_one, ← hs, hscard, add_comm]
 
   suffices (fixingSubgroup (stabilizer M a) t).index *
     (Fintype.card α - 1 - t.ncard).factorial =
@@ -1225,7 +1225,7 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
         exact hb
       -- {a, b, c} = Finset.univ
       rw [← Finset.card_eq_iff_eq_univ, h3']
-      rw [Finset.card_insert_of_not_mem]
+      rw [Finset.card_insert_of_notMem]
       rw [Finset.card_pair (ne_comm.mp hc.right)]
       simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
       apply And.intro hab

@@ -658,9 +658,9 @@ theorem closure_perm22_eq_top (hα : 5 ≤ Fintype.card α) :
     suffices 2 * n.succ = (2 * n).succ.succ by
       rw [this] at hn
       obtain ⟨a, l1, rfl⟩ := l.exists_of_length_succ hn
-      simp only [List.length, Nat.succ_inj'] at hn
+      simp only [List.length, Nat.succ_inj] at hn
       obtain ⟨b, l2, rfl⟩ := l1.exists_of_length_succ hn
-      simp only [List.length, Nat.succ_inj'] at hn
+      simp only [List.length, Nat.succ_inj] at hn
       simp only [List.prod_cons, ← mul_assoc]
       refine Subgroup.mul_mem _ ?_ ?_
       · simp only [List.mem_cons, forall_eq_or_imp] at hl
@@ -706,7 +706,7 @@ theorem is_perm22_exists_of_subtype (g : alternatingGroup α)
   simp only [Iw4T]
   rw [Subgroup.mem_subgroupOf]
   simp only [Subgroup.mem_map]
-  suffices hk : ∀ (x : α), x ∈ (g : Equiv.Perm α).support ↔ _ by
+  suffices hk : ∀ (x : α), _  ↔ x ∈ (g : Equiv.Perm α).support by
     let k : Equiv.Perm (g : Equiv.Perm α).support :=
       Equiv.Perm.subtypePerm (g : Equiv.Perm α) hk
     -- fun a => by simp only [Equiv.Perm.apply_mem_support]
@@ -732,7 +732,7 @@ theorem is_perm22_exists_of_subtype (g : alternatingGroup α)
     · apply Equiv.Perm.ofSubtype_subtypePerm
       · intro a; simp only [Equiv.Perm.mem_support, imp_self]
   · intro x
-    exact Iff.symm apply_mem_support
+    exact apply_mem_support
 
 theorem Iw4_is_generator_alt (hα : 5 ≤ Fintype.card α) :
     (iSup fun s : Nat.Combination α 4 => Iw4T (s : Finset α)) = ⊤ :=

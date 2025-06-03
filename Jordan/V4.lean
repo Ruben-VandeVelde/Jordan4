@@ -289,7 +289,7 @@ theorem center_bot (hα4 : 4 ≤ Fintype.card α) :
   simp only [Subgroup.mem_bot]
   simp only [← Subtype.coe_inj, Subgroup.coe_mk, Subgroup.coe_one]
   rw [← Equiv.Perm.support_eq_empty_iff]
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   intro a ha; let b := g a
   have hab : b ≠ a := by simp only [b]; rw [← Equiv.Perm.mem_support]; exact ha
   have : ({a, b} : Finset α)ᶜ.Nonempty :=

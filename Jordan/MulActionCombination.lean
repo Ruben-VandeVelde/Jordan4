@@ -192,14 +192,14 @@ theorem Nat.Combination_nontrivial [DecidableEq α] [Fintype α] (h1 : 0 < n) (h
     rw [← hs, Finset.card_pos] at h'1 ; obtain ⟨a, ha⟩ := h'1
     let h'2 := id h2
     rw [← hs, Finset.card_lt_iff_ne_univ, Ne, ← Finset.coe_eq_univ, ← Ne,
-      Set.ne_univ_iff_exists_not_mem] at h'2
+      Set.ne_univ_iff_exists_notMem] at h'2
     obtain ⟨b, hb⟩ := h'2
     let t : Finset α := insert b (Finset.erase s a)
     rw [nontrivial_iff]
     use ⟨s, hs⟩
     use ⟨t, by
       rw [Nat.Combination.mem_iff]
-      rw [Finset.card_insert_of_not_mem]
+      rw [Finset.card_insert_of_notMem]
       rw [Finset.card_erase_of_mem ha]
       rw [hs]; rw [Nat.sub_add_cancel]; exact h1
       intro h; apply hb; apply Finset.erase_subset; exact h⟩

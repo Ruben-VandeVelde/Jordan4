@@ -97,7 +97,7 @@ lemma Equiv.Perm.ofSubtype_range_eq (s : Set α) [DecidablePred fun a ↦ a ∈ 
       exact h x
     intro x
     rw [← Equiv.Perm.smul_def]
-    nth_rewrite 2 [hks]
+    nth_rewrite 1 [hks]
     rw [Set.smul_mem_smul_set_iff]
 
 lemma _root_.MulAction.smul_compl_set_eq {G α : Type*} [Group G] [MulAction G α]

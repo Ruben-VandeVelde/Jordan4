@@ -211,7 +211,7 @@ theorem SubMulAction.ofFixingSubgroupEmpty_equivariantMap_bijective :
     simp only [Subtype.mk_eq_mk]
     exact hxy
   · intro x
-    use ⟨x, (SubMulAction.mem_ofFixingSubgroup_iff M).mp (Set.not_mem_empty x)⟩
+    use ⟨x, (SubMulAction.mem_ofFixingSubgroup_iff M).mp (Set.notMem_empty x)⟩
     rfl
 
 theorem SubMulAction.of_fixingSubgroupEmpty_mapScalars_surjective :

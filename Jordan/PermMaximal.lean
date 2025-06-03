@@ -492,10 +492,10 @@ theorem isMaximalStab' (s : Set α) (h0 : s.Nonempty) (h1 : sᶜ.Nonempty)
   rw [or_iff_not_imp_left]
   intro hB'
   obtain ⟨a, ha, ha'⟩ :=
-    Set.not_subset_iff_exists_mem_not_mem.mp fun h => hB' ((hB_not_le_sc B hB) h)
-  rw [Set.not_mem_compl_iff] at ha'
+    Set.not_subset_iff_exists_mem_notMem.mp fun h => hB' ((hB_not_le_sc B hB) h)
+  rw [Set.notMem_compl_iff] at ha'
   obtain ⟨b, hb, hb'⟩ :=
-    Set.not_subset_iff_exists_mem_not_mem.mp fun h => hB' ((hB_not_le_s B hB) h)
+    Set.not_subset_iff_exists_mem_notMem.mp fun h => hB' ((hB_not_le_s B hB) h)
   rw [← Set.mem_compl_iff] at hb'
   have hsc_le_B : sᶜ ⊆ B := by
     intro x hx'

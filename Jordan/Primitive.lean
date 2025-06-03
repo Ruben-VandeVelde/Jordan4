@@ -404,7 +404,7 @@ theorem IsPreprimitive.isQuasipreprimitive (hGX : IsPreprimitive M α) : IsQuasi
   intro N hN hNX
   have : ∃ x : α, x ∉ fixedPoints N α :=
     by
-    rw [← Set.ne_univ_iff_exists_not_mem, ← Set.top_eq_univ]
+    rw [← Set.ne_univ_iff_exists_notMem, ← Set.top_eq_univ]
     exact hNX
   obtain ⟨a, ha⟩ := this
   rw [← MulAction.orbit.isPretransitive_iff a]
