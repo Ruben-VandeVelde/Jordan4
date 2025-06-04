@@ -7,7 +7,6 @@ Authors: Antoine Chambert-Loir
 -/
 import Mathlib.GroupTheory.GroupAction.SubMulAction
 import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Jordan.Mathlib.Alternating
 import Jordan.IndexNormal
 import Jordan.Primitive
 import Jordan.MultipleTransitivity

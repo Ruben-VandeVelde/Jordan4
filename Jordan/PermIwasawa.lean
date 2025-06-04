@@ -9,9 +9,9 @@ import Mathlib.Tactic.Basic
 import Mathlib.Tactic.Group
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.GroupAction.SubMulAction
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Centralizer
 import Jordan.Mathlib.Set
 import Jordan.Mathlib.GroupTheory.Subgroup.Basic
-import Jordan.Mathlib.Alternating
 import Jordan.MulActionCombination
 import Jordan.Jordan
 import Jordan.PermMaximal
@@ -218,7 +218,7 @@ the only nontrivial normal sugroup of (perm α) is the alternating_group. -/
 theorem Equiv.Perm.normal_subgroups {α : Type _} [DecidableEq α] [Fintype α]
     (hα : 5 ≤ Fintype.card α) {N : Subgroup (Equiv.Perm α)} (hnN : N.Normal) (ntN : Nontrivial N) :
     alternatingGroup α ≤ N := by
-  rw [← alternatingGroup.commutator_group_eq hα]
+  rw [← alternatingGroup.commutator_perm_eq hα]
   refine commutator_le_iwasawa ?_ iwasawa_two hnN ?_
   · -- quasipreprimitive action
     suffices IsPreprimitive (Perm α) (Nat.Combination α 2) by

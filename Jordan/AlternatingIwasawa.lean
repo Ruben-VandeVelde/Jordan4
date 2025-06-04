@@ -7,7 +7,6 @@ Authors: Antoine Chambert-Loir
 -/
 import Mathlib.GroupTheory.GroupAction.SubMulAction
 import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Jordan.Mathlib.Alternating
 import Jordan.IndexNormal
 import Jordan.Primitive
 import Jordan.MultipleTransitivity
@@ -431,7 +430,7 @@ theorem is_normal_subgroup_iff_of_ne_6 {α : Type _} [DecidableEq α] [Fintype �
   apply Or.intro_left; exact hN
   apply Or.intro_right
   rw [eq_top_iff]
-  rw [← alternatingGroup_is_perfect hα]
+  rw [← commutator_alternatingGroup_eq_top hα]
   apply commutator_le_iwasawa _ Iw3 hnN
   · intro h
     obtain ⟨g, hgN, hg⟩ := N.nontrivial_iff_exists_ne_one.mp hN
@@ -798,7 +797,7 @@ theorem normal_subgroups_6
     {N : Subgroup (alternatingGroup α)} (hnN : N.Normal) (ntN : Nontrivial N) :
     N = ⊤ := by
   rw [eq_top_iff]
-  rw [← alternatingGroup_is_perfect hα]
+  rw [← commutator_alternatingGroup_eq_top hα]
   refine commutator_le_iwasawa ?_ Iw3 hnN ?_
   · -- quasipreprimitive action
     suffices IsPreprimitive (alternatingGroup α) (Nat.Combination α 3) by
@@ -832,7 +831,7 @@ theorem normal_subgroups_8 {α : Type _} [DecidableEq α] [Fintype α]
     (hnN : N.Normal) (ntN : Nontrivial N) : N = ⊤ :=
   by
   rw [eq_top_iff]
-  rw [← alternatingGroup_is_perfect hα]
+  rw [← commutator_alternatingGroup_eq_top hα]
   refine commutator_le_iwasawa ?_ (Iw4 hα) hnN ?_
   · -- quasipreprimitive action
     suffices IsPreprimitive (alternatingGroup α) (Nat.Combination α 4) by

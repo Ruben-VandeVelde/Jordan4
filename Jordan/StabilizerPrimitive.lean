@@ -5,11 +5,9 @@ Authors: Antoine Chambert-Loir
 
 ! This file was ported from Lean 3 source module stabilizer_primitive
 -/
-import Jordan.Mathlib.Alternating
 import Jordan.Mathlib.Stabilizer
 import Jordan.Mathlib.Set
 import Jordan.Mathlib.GroupTheory.Subgroup.Basic
-import Jordan.Mathlib.Alternating
 import Jordan.IndexNormal
 import Jordan.Primitive
 import Jordan.MultipleTransitivity

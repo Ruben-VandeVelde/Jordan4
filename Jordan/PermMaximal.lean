@@ -10,7 +10,6 @@ import Mathlib.Tactic.Group
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.GroupAction.SubMulAction
 import Mathlib.Order.Minimal
-import Jordan.Mathlib.Alternating
 import Jordan.Mathlib.GroupTheory.Subgroup.Basic
 import Jordan.Mathlib.Stabilizer
 import Jordan.Mathlib.Set
