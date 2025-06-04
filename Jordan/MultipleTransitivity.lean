@@ -1193,10 +1193,8 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
           rw [← this]
           use b
           apply And.intro hb
-          change (Equiv.swap a b * Equiv.swap c b) • b = c
-          simp only [Equiv.Perm.smul_def, Equiv.Perm.coe_mul, Function.comp_apply]
-          rw [Equiv.swap_apply_right]
-          rw [Equiv.swap_apply_of_ne_of_ne hc.left hc.right]
+          simp [g, Equiv.Perm.smul_def, Equiv.swap_apply_right,
+            Equiv.swap_apply_of_ne_of_ne hc.left hc.right]
         -- g • B = B
         apply hB.smul_eq_of_mem ha
         change (Equiv.swap a b * Equiv.swap c b) • a ∈ B
