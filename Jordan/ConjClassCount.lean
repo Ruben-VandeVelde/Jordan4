@@ -441,7 +441,7 @@ theorem Equiv.permWithCycleType_empty {c : Multiset ℕ} (hc : Fintype.card α <
   intro g
   unfold Equiv.permWithCycleType
   simp only [Set.toFinset_univ, Finset.mem_filter, Finset.mem_univ, true_and]
-  intro hg; apply lt_iff_not_le.mp hc; rw [← hg]
+  intro hg; apply lt_iff_not_ge.mp hc; rw [← hg]
   rw [Equiv.Perm.sum_cycleType]
   exact (Equiv.Perm.support g).card_le_univ
 

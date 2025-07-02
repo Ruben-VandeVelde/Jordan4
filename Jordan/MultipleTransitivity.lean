@@ -412,7 +412,7 @@ lemma exists_smul_of_last_eq [hα' : IsPretransitive M α] {n : ℕ} (a : α) (x
     simp only [Fin.castSucc_mk, ne_eq, smul_left_cancel_iff, EmbeddingLike.apply_eq_iff_eq, Fin.mk.injEq]
     exact Fin.ne_of_lt hi
   use {
-    toFun := fun i => ⟨g • x i, (by
+    toFun := fun i => ⟨g • x i.castSucc, (by
       simp
       exact zgx i)⟩
     inj' := fun i j ↦ by
@@ -1143,11 +1143,11 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
     (B : Set α) (hB : IsBlock (alternatingGroup α) B) :
     IsTrivialBlock B := by
   classical
-  cases' le_or_lt (Fintype.card α) 2 with h2 h2
+  cases' le_or_gt (Fintype.card α) 2 with h2 h2
   · exact IsTrivialBlock.of_card_le_2 h2 B
-  cases' le_or_lt (Fintype.card α) 3 with h3 h4
+  cases' le_or_gt (Fintype.card α) 3 with h3 h4
   · have h3' : Fintype.card α = 3 := le_antisymm h3 h2
-    cases' le_or_lt (Fintype.card B) 1 with h1 h2
+    cases' le_or_gt (Fintype.card B) 1 with h1 h2
     · apply Or.intro_left
       rw [← Set.subsingleton_coe, ← Fintype.card_le_one_iff_subsingleton]
       exact h1
@@ -1165,7 +1165,7 @@ theorem alternatingGroup.has_trivial_blocks [DecidableEq α]
           constructor
           · intro _; exact Finset.mem_univ c
           · intro _; exact h c
-        rw [lt_iff_not_ge] at h2 ; apply h2; rw [ge_iff_le]
+        rw [lt_iff_not_ge] at h2 ; apply h2
         rw [← Finset.card_eq_iff_eq_univ] at this
         rw [← this]
         rw [Finset.card_pair hab]

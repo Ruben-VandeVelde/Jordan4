@@ -206,7 +206,7 @@ theorem moves_in (hα : 4 ≤ Fintype.card α) (t : Set α) :
   -- exact h.right
       rw [Set.diff_nonempty]
       intro ht
-      rw [gt_iff_lt, ← not_le] at ht'
+      rw [← not_le] at ht'
       apply ht'
       convert Set.ncard_le_ncard ht
       rw [(Set.ncard_pair hab).symm]
@@ -253,7 +253,7 @@ theorem has_three_cycle_of_stabilizer [DecidableEq α] (s : Set α) (hα : 4 < F
       use g
       rw [stabilizer_compl] at hg'
       exact ⟨hg, hg'⟩
-    rw [lt_iff_not_le] at hα ⊢
+    rw [lt_iff_not_ge] at hα ⊢
     intro hs'; apply hα
     rw [← Nat.card_eq_fintype_card, ← Set.ncard_add_ncard_compl s]
     exact Nat.add_le_add hs hs'
@@ -403,7 +403,7 @@ end
       rw [stabilizer_compl] at hg ; exact hg
       exact H
     · intro h
-      apply (lt_iff_le_not_le.mp hG).right
+      apply (lt_iff_le_not_ge.mp hG).right
       --  G ⊓ alternating_group α ≤ stabilizer (equiv.perm α) s ⊓ alternating_group α,
       rw [le_inf_iff]
       constructor
@@ -618,7 +618,7 @@ theorem isMaximalStab'
         rw [MulAction.stabilizer_subgroupOf_eq] at hG'
         exact le_of_lt hG'
       · apply isPreprimitive_of_stabilizer_lt s h0' h1' hs (le_of_lt hα)
-        rw [lt_iff_le_not_le]
+        rw [lt_iff_le_not_ge]
         constructor
         · intro g
           simp only [Subgroup.mem_inf]
@@ -631,7 +631,7 @@ theorem isMaximalStab'
             simpa only [mem_stabilizer_iff] using hg
           · rfl
         · intro h
-          rw [lt_iff_le_not_le] at hG' ; apply hG'.right
+          rw [lt_iff_le_not_ge] at hG' ; apply hG'.right
           intro g' hg'
           rw [mem_stabilizer_iff]
           change (g' : Equiv.Perm α) • s = s; rw [← mem_stabilizer_iff]

@@ -101,7 +101,7 @@ variable {G X}
 theorem IsTrivialBlock.of_card_le_2 [Fintype X] (hX : Fintype.card X ≤ 2) (B : Set X) :
     IsTrivialBlock B := by
   classical
-  cases' le_or_lt (Fintype.card B) 1 with h1 h1
+  cases' le_or_gt (Fintype.card B) 1 with h1 h1
   · apply Or.intro_left
     rw [← Set.subsingleton_coe, ← Fintype.card_le_one_iff_subsingleton]
     exact h1

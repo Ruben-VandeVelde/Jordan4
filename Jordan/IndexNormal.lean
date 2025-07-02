@@ -105,8 +105,7 @@ private theorem aux_dvd_lemma {r p : ℕ} (hp : p.Prime) (h : r ∣ Nat.factoria
   by_contra h
   obtain ⟨l, hl, hl'⟩ := Nat.exists_prime_and_dvd h
   rw [Nat.dvd_gcd_iff, Nat.Prime.dvd_factorial hl] at hl'
-  apply (lt_iff_not_ge p.pred p).mp (Nat.pred_lt (Nat.Prime.ne_zero hp))
-  rw [Nat.pred_eq_sub_one]; rw [ge_iff_le]
+  apply lt_iff_not_ge.mp (Nat.sub_one_lt (Nat.Prime.ne_zero hp))
   exact le_trans (hr hl hl'.left) hl'.right
 
 /-- A subgroup of a finite group whose index is the smallest prime factor is normal -/

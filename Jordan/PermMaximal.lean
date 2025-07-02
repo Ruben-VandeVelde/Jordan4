@@ -51,7 +51,7 @@ theorem subgroup_of_group_of_order_two
     {G : Type _} [Group G] [Fintype G] (hG : Fintype.card G = 2)
     (H : Subgroup G) : H = ⊥ ∨ H = ⊤ := by
   classical
-  cases le_or_lt (Fintype.card H) 1 with
+  cases le_or_gt (Fintype.card H) 1 with
   | inl h =>
     apply Or.intro_left
     apply Subgroup.eq_bot_of_card_le
@@ -229,11 +229,11 @@ theorem has_swap_of_lt_stabilizer (s : Set α) (G : Subgroup (Equiv.Perm α))
     constructor
     rw [swap_isSwap_iff]; exact h
     apply swap_mem_stabilizer ha hb
-  cases' lt_or_le 1 (s.ncard) with h1 h1'
+  cases' lt_or_ge 1 (s.ncard) with h1 h1'
   · obtain ⟨g, hg, hg'⟩ := this s h1
     use g; apply And.intro hg
     exact le_of_lt hG hg'
-  cases' lt_or_le 1 sᶜ.ncard with h1c h1c'
+  cases' lt_or_ge 1 sᶜ.ncard with h1c h1c'
   · obtain ⟨g, hg, hg'⟩ := this sᶜ h1c
     use g; apply And.intro hg
     rw [stabilizer_compl] at hg'
