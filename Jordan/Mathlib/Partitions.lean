@@ -38,7 +38,6 @@ variable {α : Type _}
 
 open scoped BigOperators
 
-example (s t : Set α) : s ∩ t = t ∩ s := by exact Set.inter_comm s t
 /-- A partion of a type induces partitions on subsets -/
 theorem Setoid.isPartition_on {α : Type _} {P : Set (Set α)}
     (hP : Setoid.IsPartition P) (s : Set α) :

@@ -6,8 +6,12 @@ Authors: Antoine Chambert-Loir
 ! This file was ported from Lean 3 source module for_mathlib.stabilizer
 -/
 
-import Jordan.Mathlib.Set
-
+import Mathlib.Algebra.Group.Action.Basic
+import Mathlib.Algebra.Group.Action.Pointwise.Set.Basic
+import Mathlib.Data.Set.Lattice
+import Mathlib.Algebra.Group.Pointwise.Finset.Basic
+import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib.Data.Set.Card
 import Mathlib.GroupTheory.GroupAction.Basic
 import Mathlib.GroupTheory.GroupAction.FixingSubgroup
 import Mathlib.GroupTheory.GroupAction.SubMulAction
@@ -41,12 +45,10 @@ variable (G : Type _) [Group G] {α : Type _} [MulAction G α]
 
 /-- The stabilizer of the complement is the stabilizer of the set. -/
 @[simp]
-theorem stabilizer_compl {s : Set α} : stabilizer G (sᶜ) = stabilizer G s :=
-  by
-  have : ∀ s : Set α, stabilizer G s ≤ stabilizer G (sᶜ) :=
-    by
+theorem stabilizer_compl {s : Set α} : stabilizer G (sᶜ) = stabilizer G s := by
+  have : ∀ s : Set α, stabilizer G s ≤ stabilizer G (sᶜ) := by
     intro s g h
-    rw [mem_stabilizer_iff, smul_compl_set, mem_stabilizer_iff.1 h]
+    rw [mem_stabilizer_iff, Set.smul_set_compl, mem_stabilizer_iff.1 h]
   refine le_antisymm ?_ (this _)
   convert this _
   exact (compl_compl _).symm
@@ -73,7 +75,7 @@ theorem of_stabilizer_def (s : Set α) (g : stabilizer G s) (x : s) :
     (g : G) • (x : α) = g • (x : α) := rfl
 
 theorem of_stabilizer_set_def (s : Set α) (g : stabilizer G s) (t : Set α) :
-  (g : G) • t = g • t := rfl
+    (g : G) • t = g • t := rfl
 
 theorem fixingSubgroup_le_stabilizer (s : Set α) : fixingSubgroup G s ≤ stabilizer G s := by
   intro k hk
@@ -86,5 +88,3 @@ theorem fixingSubgroup_le_stabilizer (s : Set α) : fixingSubgroup G s ≤ stabi
   exact hk
 
 end MulAction
-
--- #lint

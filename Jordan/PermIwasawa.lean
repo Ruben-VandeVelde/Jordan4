@@ -61,7 +61,7 @@ lemma IwasawaT'_isConj (s : Finset α) (g : Equiv.Perm α) :
   intro x
   simp only [toPerm_apply]
   rw [← Set.mem_smul_set_iff_inv_smul_mem]
-  simp only [Set.mem_compl_iff, Perm.smul_def, smul_compl_set, MulAut.smul_def,
+  simp only [Set.mem_compl_iff, Perm.smul_def, Set.smul_set_compl, MulAut.smul_def,
     MulAut.conj_inv_apply, coe_mul, Function.comp_apply, apply_inv_self,
     EmbeddingLike.apply_eq_iff_eq]
 
@@ -104,7 +104,7 @@ lemma _root_.MulAction.smul_compl_set_eq {G α : Type*} [Group G] [MulAction G �
     (s : Set α) (g : G) :
     (g • s)ᶜ = g • sᶜ := by
   ext k
-  simp only [Set.mem_compl_iff, smul_compl_set]
+  simp only [Set.mem_compl_iff, Set.smul_set_compl]
 
 
 lemma this1 (G H : Type*) [Group H] [Group G] (f : H →* G) (g : G) :
@@ -123,7 +123,7 @@ theorem IwasawaT_is_conj' (s : Finset α) (g : Equiv.Perm α) :
   unfold IwasawaT
   unfold Iwt
   simp only [Equiv.Perm.ofSubtype_range_eq]
-  simp only [Finset.coe_smul_finset, ← smul_compl_set]
+  simp only [Finset.coe_smul_finset, ← Set.smul_set_compl]
   apply Equiv.Perm.fixingSubgroup_conj
 
 omit [Fintype α] in

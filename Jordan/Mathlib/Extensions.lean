@@ -5,7 +5,9 @@ Authors: Antoine Chambert-Loir
 
 ! This file was ported from Lean 3 source module for_mathlib.extensions
 -/
-import Jordan.Mathlib.ULift
+import Mathlib.Control.ULift
+import Mathlib.Data.ULift
+import Mathlib.Logic.Equiv.Defs
 -- import Jordan.Mathlib.Cardinal
 
 -- import Mathlib.Tactic.Lift
@@ -19,26 +21,9 @@ open scoped Classical
 
 variable {α : Type _}
 
-example (h q : Prop) : h → ¬h → q :=
-  absurd
-
-/-- Given a nat.card inequality, get an embedding from a fin _ -/
-theorem gimme_some {m : ℕ} (hα : ↑m ≤ ENat.card α) : Nonempty (Fin m ↪ α) := by
-  suffices Nonempty (ULift (Fin m) ↪ α) by
-    obtain ⟨x'⟩ := this;
-    use Equiv.ulift.symm.toEmbedding.trans x'
-    apply Function.Embedding.injective
-  rw [← Cardinal.le_def, Cardinal.mk_fintype, Fintype.card_ulift, Fintype.card_fin]
-  exact Iff.mp Cardinal.natCast_le_toENat_iff hα
-
-theorem gimme_some_equiv {m : ℕ} [Fintype α] (hα : m = Fintype.card α) : Nonempty (Fin m ≃ α) := by
-  exact ⟨(Fintype.equivFinOfCardEq hα.symm).symm⟩
-
-
-
 theorem equiv_fin_of_partENat_card_eq {m : ℕ} (hα : ENat.card α = m) :
     Nonempty (Fin m ≃ α) := by
-  cases' fintypeOrInfinite α with h h -- <;> skip
+  cases' fintypeOrInfinite α with h h
   · simp only [ENat.card_eq_coe_fintype_card, Nat.cast_inj] at hα
     exact ⟨(Fintype.equivFinOfCardEq hα).symm⟩
   · rw [ENat.card_eq_top_of_infinite] at hα

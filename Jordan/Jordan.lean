@@ -412,7 +412,7 @@ theorem is_two_pretransitive_weak_jordan [DecidableEq α]
         suffices s = g • s by
           apply hb
           rw [this]
-          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_notMem] at hgb
+          simp only [Set.smul_set_compl, Set.mem_compl_iff, Set.not_notMem] at hgb
           exact hgb
         apply Set.eq_of_subset_of_ncard_le
         · exact subset_trans h Set.inter_subset_right
@@ -570,7 +570,7 @@ theorem is_two_preprimitive_weak_jordan [DecidableEq α]
         suffices s = g • s by
           apply hb
           rw [this]
-          simp only [smul_compl_set, Set.mem_compl_iff, Set.not_notMem] at hgb
+          simp only [Set.smul_set_compl, Set.mem_compl_iff, Set.not_notMem] at hgb
           exact hgb
         apply Set.eq_of_subset_of_ncard_le
         · exact subset_trans h Set.inter_subset_right
